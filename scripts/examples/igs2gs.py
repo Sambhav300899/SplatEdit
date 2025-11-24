@@ -53,7 +53,7 @@ class Config:
     # Path to the .pt files. If provide, it will skip training and run evaluation only.
     ckpt: Optional[List[str]] = None
     # Path to a checkpoint file to initialize the model from.
-    start_ckpt: Optional[str] = None
+    start_ckpt: str = None
     # Name of compression strategy to use
     compression: Optional[Literal["png"]] = None
     # Render trajectory path
