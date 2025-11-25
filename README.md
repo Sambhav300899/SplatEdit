@@ -49,6 +49,8 @@ pip install gsplat==1.5.3
 ## To download the dataset run
 ```
 python scripts/datasets/download_dataset.py
+
+gdown 1x4pf17vjt9IslKorC4BMZNZogyFsFiXS
 ```
 
 ## Train a gsplat
