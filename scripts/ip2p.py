@@ -159,8 +159,19 @@ class InstructPix2Pix(nn.Module):
         latents = self.scheduler.add_noise(latents, noise, self.scheduler.timesteps[0])  # type: ignore
 
         # sections of code used from https://github.com/huggingface/diffusers/blob/main/src/diffusers/pipelines/stable_diffusion/pipeline_stable_diffusion_instruct_pix2pix.py
+        # timesteps = self.scheduler.timesteps
+        # if torch.is_tensor(timesteps):
+        #     timesteps = timesteps.detach().cpu().tolist()
+
         for i, t in enumerate(self.scheduler.timesteps):
             # predict the noise residual with unet, NO grad!
+            if torch.is_tensor(t):
+                t_tensor = t.to(device=self.scheduler.alphas_cumprod.device, dtype=torch.long)
+            else:
+                t_tensor = torch.tensor(int(t), device=self.scheduler.alphas_cumprod.device, dtype=torch.long)
+
+            # For UNet, diffusers usually expects shape (batch,) timesteps
+            t_batch = t_tensor.expand(latents.shape[0])
             with torch.no_grad():
                 # pred noise
                 latent_model_input = torch.cat([latents] * 3)
@@ -181,7 +192,8 @@ class InstructPix2Pix(nn.Module):
             )
 
             # get previous sample, continue loop
-            latents = self.scheduler.step(noise_pred, t, latents).prev_sample
+            # t_int= int(t.item()) if torch.is_tensor(t) else int(t)
+            latents = self.scheduler.step(noise_pred, t_tensor, latents).prev_sample
 
         # decode latents to get edited image
         with torch.no_grad():

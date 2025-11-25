@@ -204,7 +204,7 @@ class Config:
     # instructpix2pix params
     guidance_scale: float = 7.5
     image_guidance_scale: float = 1.5
-    pix2pix_iterations: float = 10
+    pix2pix_iterations: int = 10
 
     # How many iterations to update after editing
     update_iters: float = 2500
