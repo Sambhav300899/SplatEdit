@@ -1,0 +1,184 @@
+import torch
+from datasets.colmap import Parser, Dataset
+from gsplat.rendering import rasterization
+import tqdm
+import torch.nn.functional as F
+import math
+import metrics
+import cv2
+from dataclasses import dataclass
+
+
+@dataclass
+class Config:
+    original_splat_ckpt: str = "../base_splats/results/garden/ckpts/ckpt_19999_rank0.pt"
+    edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/results/garden_edited_igs2gs/ckpts/ckpt_4999_rank0.pt"
+    data_dir: str = "../data/360_v2/garden/"
+    data_factor: int = 8
+    original_prompt: str = "there is a wooden table with a vase on it in the yard"
+    edited_prompt: str = "Make it autumn"
+
+
+@torch.no_grad()
+def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_degree):
+    images = []
+
+    print(f"rendering {len(dataset)} images...")
+    for i in tqdm.tqdm(range(len(dataset))):
+        data = dataset[i]
+        camtoworld = data["camtoworld"].to(device)
+        K = data["K"].to(device)
+
+        gt_image = data["image"].to(device)  # [H, W, 3]
+        height, width = gt_image.shape[:2]
+
+        viewmat = torch.linalg.inv(camtoworld)
+
+        render_colors, render_alphas, info = rasterization(
+            means=means,
+            quats=quats,
+            scales=scales,
+            opacities=opacities,
+            colors=colors,
+            viewmats=viewmat.unsqueeze(0),
+            Ks=K.unsqueeze(0),
+            width=width,
+            height=height,
+            sh_degree=sh_degree,
+            packed=False,
+        )
+
+        # uncomment to debug
+        # import cv2
+        # display_image = (render_colors.squeeze().cpu().numpy() * 255).astype("uint8")
+        # cv2.imshow("Rendered Image", display_image[:, :, ::-1])
+        # cv2.waitKey(1)
+
+        images.append(render_colors.squeeze().permute(2, 1, 0))
+
+    # cv2.destroyAllWindows()
+    images = torch.stack(images, dim=0)
+    return images
+
+
+@torch.no_grad()
+def get_clip_based_metrics(
+    orig_rendered, edited_rendered, original_prompt, edited_prompt, device
+):
+    clip_metrics = metrics.ClipSimilarity(device=device)
+
+    try:
+        # Attempt to run everything at once
+        sim_0, sim_1, sim_direction, sim_image = clip_metrics(
+            orig_rendered, edited_rendered, original_prompt, edited_prompt
+        )
+        print("Calculated CLIP metrics without batching.")
+    except RuntimeError as e:
+        # If it fails (e.g., CUDA out of memory), fall back to batched calculation
+        if "CUDA out of memory" in str(e) or "out of memory" in str(e):
+            print("CUDA out of memory, falling back to batched calculation.")
+            batch_size = 16
+            num_images = orig_rendered.shape[0]
+
+            all_sim_0, all_sim_1, all_sim_direction, all_sim_image = [], [], [], []
+
+            print(
+                f"Calculating CLIP metrics for {num_images} images in batches of {batch_size}..."
+            )
+            for i in tqdm.tqdm(range(0, num_images, batch_size)):
+                batch_orig_rendered = orig_rendered[i : i + batch_size]
+                batch_edited_rendered = edited_rendered[i : i + batch_size]
+
+                sim_0_batch, sim_1_batch, sim_direction_batch, sim_image_batch = (
+                    clip_metrics(
+                        batch_orig_rendered,
+                        batch_edited_rendered,
+                        original_prompt,
+                        edited_prompt,
+                    )
+                )
+                all_sim_0.append(sim_0_batch)
+                all_sim_1.append(sim_1_batch)
+                all_sim_direction.append(sim_direction_batch)
+                all_sim_image.append(sim_image_batch)
+
+            sim_0 = torch.cat(all_sim_0)
+            sim_1 = torch.cat(all_sim_1)
+            sim_direction = torch.cat(all_sim_direction)
+            sim_image = torch.cat(all_sim_image)
+        else:
+            # Re-raise other RuntimeErrors
+            raise e
+
+    return sim_0.cpu(), sim_1.cpu(), sim_direction.cpu(), sim_image.cpu()
+
+
+if __name__ == "__main__":
+    config = Config()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    parser = Parser(
+        data_dir=config.data_dir,
+        factor=config.data_factor,
+        normalize=True,
+        test_every=8,
+    )
+    trainset = Dataset(parser, split="train", patch_size=None, load_depths=False)
+
+    orig_rendered = []
+    edited_rendered = []
+
+    for i, splat_ckpt in enumerate(
+        [config.original_splat_ckpt, config.edited_splat_ckpt]
+    ):
+        gs = torch.load(splat_ckpt, map_location=device, weights_only=True)
+
+        splats = gs["splats"]
+        means = splats["means"].to(device)
+        quats = splats["quats"].to(device)
+        scales = splats["scales"].to(device)
+        opacities = splats["opacities"].to(device)
+
+        # Handle SH
+        sh0 = splats["sh0"].to(device)
+        if "shN" in splats:
+            shN = splats["shN"].to(device)
+            colors = torch.cat([sh0, shN], dim=-2)
+        else:
+            colors = sh0
+        sh_degree = int(math.sqrt(colors.shape[-2]) - 1)
+
+        # Process parameters for rendering
+        quats = F.normalize(quats, p=2, dim=-1)
+        scales = torch.exp(scales)
+        opacities = torch.sigmoid(opacities)
+        print(f"Loaded {len(means)} Gaussians with SH degree {sh_degree}.")
+
+        images = render_loader(
+            dataset=trainset,
+            device=device,
+            means=means,
+            quats=quats,
+            scales=scales,
+            opacities=opacities,
+            colors=colors,
+            sh_degree=sh_degree,
+        )
+
+        if i == 0:
+            orig_rendered = images
+        else:
+            edited_rendered = images
+
+    sim_0, sim_1, sim_direction, sim_image = get_clip_based_metrics(
+        orig_rendered,
+        edited_rendered,
+        config.original_prompt,
+        config.edited_prompt,
+        device,
+    )
+
+    sim_0 = sim_0.mean()
+    sim_1 = sim_1.mean()
+    sim_direction = sim_direction.mean()
+    sim_image = sim_image.mean()

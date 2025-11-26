@@ -96,3 +96,21 @@ update_iters defines how many iterations we run after editing. So we will basica
 E.g. - `max_steps = 5000`, `update_iters = 2500`
 Update images -> 2500 steps
 Update images -> 2500 steps
+
+## Getting captions from original dataset
+For evaluating clip directional similarity, we need the originial and edited captions. Since we lack the original captions, we can generate them using BLIP. For doing this run - 
+```
+python helpers/get_original_captions_from_set_of_imgs.py --image_folder data/360_v2/garden/images_8_png --output_path data/garden_captions.txt
+```
+
+
+## Evaluating an edited splat 
+```
+python scripts/evaluate_edited.py \
+  --original_splat_ckpt "../base_splats/results/garden/ckpts/ckpt_19999_rank0.pt" \
+  --edited_splat_ckpt "/home/sambhav/ml/SplatEdit/results/results/garden_edited_igs2gs/ckpts/ckpt_4999_rank0.pt" \
+  --data_dir "../data/360_v2/garden/" \
+  --data_factor 8 \
+  --original_prompt "there is a wooden table with a vase on it in the yard" \
+  --edited_prompt "Make it autumn"
+```
