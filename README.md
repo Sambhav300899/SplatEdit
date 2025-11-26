@@ -37,9 +37,20 @@ pip install git+https://github.com/harry7557558/fused-bilagrid --no-build-isolat
 pip install -r requirements.txt
 ```
 
+**fix issues dependencies**
+```
+pip install hugging-face==0.25.2
+pip install "transformers==4.45.2"
+pip install nerfstudio[gen]
+pip install gsplat==1.5.3
+
+```
+
 ## To download the dataset run
 ```
 python scripts/datasets/download_dataset.py
+
+gdown 1x4pf17vjt9IslKorC4BMZNZogyFsFiXS
 ```
 
 ## Train a gsplat
@@ -70,7 +81,7 @@ CUDA_VISIBLE_DEVICES=0 python scripts/igs2gs.py default \
     --data_dir data/360_v2/garden/ \
     --data_factor 8 \
     --result_dir results/garden_edited_igs2gs \
-    --start_ckpt results/garden/ckpts/ckpt_19999_rank0.pt \
+    --start_ckpt data/base_gsplats/results/garden/ckpts/ckpt_19999_rank0.pt \
     --prompt "make it autumn" \
     --max_steps 5000 \
     --ip2p_method iterative \

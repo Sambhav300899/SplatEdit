@@ -207,7 +207,7 @@ class Config:
     pix2pix_iterations: int = 10
 
     # How many iterations to update after editing
-    update_iters: float = 2500
+    update_iters: int = 2500
 
     def adjust_steps(self, factor: float):
         self.eval_steps = [int(i * factor) for i in self.eval_steps]
