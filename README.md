@@ -103,7 +103,6 @@ For evaluating clip directional similarity, we need the originial and edited cap
 python helpers/get_original_captions_from_set_of_imgs.py --image_folder data/360_v2/garden/images_8_png --output_path data/garden_captions.txt
 ```
 
-
 ## Evaluating an edited splat 
 ```
 python scripts/evaluate_edited.py \

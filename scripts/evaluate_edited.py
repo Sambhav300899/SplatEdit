@@ -46,8 +46,11 @@ def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_d
             height=height,
             sh_degree=sh_degree,
             packed=False,
+            render_mode="RGB+ED",
         )
 
+        print(render_colors.shape)
+        exit()
         # uncomment to debug
         # import cv2
         # display_image = (render_colors.squeeze().cpu().numpy() * 255).astype("uint8")
