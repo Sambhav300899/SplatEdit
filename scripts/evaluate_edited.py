@@ -11,22 +11,74 @@ from dataclasses import dataclass
 
 @dataclass
 class Config:
-    original_splat_ckpt: str = "../base_splats/results/garden/ckpts/ckpt_19999_rank0.pt"
-    edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/results/garden_edited_igs2gs/ckpts/ckpt_4999_rank0.pt"
-    data_dir: str = "../data/360_v2/garden/"
-    data_factor: int = 8
+    original_splat_ckpt: str = "base_splats/results/garden/ckpts/ckpt_19999_rank0.pt"
+    # edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs/ckpts/ckpt_4999_rank0.pt"
+    edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs_naive/ckpts/ckpt_2499_rank0.pt"
+
+    data_dir: str = "data/360_v2/garden/"
+    data_factor: int = 2
     original_prompt: str = "there is a wooden table with a vase on it in the yard"
-    edited_prompt: str = "Make it autumn"
+    edited_prompt: str = "make it like van goghs starry night"
+
+
+def get_spiral_trajectory(dataset, num_steps=60, num_rotations=2):
+    camtoworlds_all = torch.stack([data["camtoworld"] for data in dataset], dim=0)
+    centers = camtoworlds_all[:, :3, 3]
+    centers_mean = centers.mean(dim=0)
+
+    avg_scene_radii = torch.norm(
+        centers[:, [0, 2]] - centers_mean[[0, 2]], dim=1
+    ).mean()
+    # avg_scene_radii = torch.norm(centers - centers_mean, dim=1).mean()
+    avg_height = centers_mean[1]
+
+    trajectory_camtoworlds = []
+    world_up = torch.tensor([0.0, -1.0, 0.0])
+
+    for t in torch.linspace(0, 1, num_steps):
+        theta = 2 * math.pi * num_rotations * t
+
+        cam_pos = torch.tensor(
+            [
+                centers_mean[0] + avg_scene_radii * math.cos(theta),
+                avg_height,
+                centers_mean[2] + avg_scene_radii * math.sin(theta),
+            ]
+        )
+
+        forward = centers_mean - cam_pos
+        forward /= torch.norm(forward)
+
+        right = torch.cross(forward, world_up)
+        right /= torch.norm(right)
+
+        up_true = torch.cross(forward, right)
+        up_true /= torch.norm(up_true)
+
+        camtoworld = torch.eye(4)
+        camtoworld[:3, 0] = right
+        camtoworld[:3, 1] = up_true
+        camtoworld[:3, 2] = forward
+        camtoworld[:3, 3] = cam_pos
+
+        trajectory_camtoworlds.append(camtoworld)
+
+    return torch.stack(trajectory_camtoworlds, dim=0)
 
 
 @torch.no_grad()
 def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_degree):
     images = []
+    depths = []
+    # trajectory = generate_viser_spiral(dataset, num_steps=len(dataset), num_rotations=1)
 
     print(f"rendering {len(dataset)} images...")
     for i in tqdm.tqdm(range(len(dataset))):
         data = dataset[i]
+
         camtoworld = data["camtoworld"].to(device)
+        # camtoworld = trajectory[i].to(device)
+        # print(camtoworld)
         K = data["K"].to(device)
 
         gt_image = data["image"].to(device)  # [H, W, 3]
@@ -49,19 +101,24 @@ def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_d
             render_mode="RGB+ED",
         )
 
-        print(render_colors.shape)
-        exit()
+        depth = render_colors[:, :, :, 3]
+        render_colors = render_colors[:, :, :, :3]
+
         # uncomment to debug
         # import cv2
-        # display_image = (render_colors.squeeze().cpu().numpy() * 255).astype("uint8")
-        # cv2.imshow("Rendered Image", display_image[:, :, ::-1])
+
+        # display_image = (depth.squeeze().cpu().numpy() * 255).astype("uint8")
+        # cv2.imshow("Rendered Image", display_image)
         # cv2.waitKey(1)
 
         images.append(render_colors.squeeze().permute(2, 1, 0))
+        depths.append(render_colors.squeeze().permute(2, 1, 0))
 
     # cv2.destroyAllWindows()
     images = torch.stack(images, dim=0)
-    return images
+    depths = torch.stack(depths, dim=0)
+
+    return images, depths
 
 
 @torch.no_grad()
@@ -130,6 +187,8 @@ if __name__ == "__main__":
 
     orig_rendered = []
     edited_rendered = []
+    orig_depths = []
+    edited_depths = []
 
     for i, splat_ckpt in enumerate(
         [config.original_splat_ckpt, config.edited_splat_ckpt]
@@ -157,7 +216,7 @@ if __name__ == "__main__":
         opacities = torch.sigmoid(opacities)
         print(f"Loaded {len(means)} Gaussians with SH degree {sh_degree}.")
 
-        images = render_loader(
+        images, depths = render_loader(
             dataset=trainset,
             device=device,
             means=means,
@@ -170,8 +229,10 @@ if __name__ == "__main__":
 
         if i == 0:
             orig_rendered = images
+            orig_depths = depths
         else:
             edited_rendered = images
+            edited_depths = depths
 
     sim_0, sim_1, sim_direction, sim_image = get_clip_based_metrics(
         orig_rendered,
@@ -181,7 +242,15 @@ if __name__ == "__main__":
         device,
     )
 
-    sim_0 = sim_0.mean()
-    sim_1 = sim_1.mean()
-    sim_direction = sim_direction.mean()
-    sim_image = sim_image.mean()
+    sim_0_mean = sim_0.mean()
+    sim_1_mean = sim_1.mean()
+    sim_direction_mean = sim_direction.mean()
+    sim_image_mean = sim_image.mean()
+
+    print(f"CLIP Similarity (Original to Prompt 0): {sim_0_mean:.4f}")
+    print(f"CLIP Similarity (Edited to Prompt 1): {sim_1_mean:.4f}")
+    print(f"CLIP Directional Similarity: {sim_direction_mean:.4f}")
+    print(f"CLIP Image Similarity: {sim_image_mean:.4f}")
+
+    depth_diff = torch.abs(orig_depths - edited_depths).mean()
+    print(f"Mean Absolute Depth Difference: {depth_diff:.4f}")
