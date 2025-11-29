@@ -5,7 +5,6 @@ import tqdm
 import torch.nn.functional as F
 import math
 import metrics
-import cv2
 from dataclasses import dataclass
 
 
@@ -14,26 +13,28 @@ class Config:
     original_splat_ckpt: str = "base_splats/results/garden/ckpts/ckpt_19999_rank0.pt"
     # edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs/ckpts/ckpt_4999_rank0.pt"
     edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs_naive/ckpts/ckpt_2499_rank0.pt"
-
     data_dir: str = "data/360_v2/garden/"
-    data_factor: int = 2
+
+    data_factor: int = 8
     original_prompt: str = "there is a wooden table with a vase on it in the yard"
     edited_prompt: str = "make it like van goghs starry night"
 
 
-def get_spiral_trajectory(dataset, num_steps=60, num_rotations=2):
+def get_spiral_trajectory(dataset, num_steps=60, num_rotations=2, camera_down_tilt=0.3):
+    # COORDS USED BY GSPLAT
+    # -Z is UP
     camtoworlds_all = torch.stack([data["camtoworld"] for data in dataset], dim=0)
     centers = camtoworlds_all[:, :3, 3]
     centers_mean = centers.mean(dim=0)
 
     avg_scene_radii = torch.norm(
-        centers[:, [0, 2]] - centers_mean[[0, 2]], dim=1
+        centers[:, [0, 1]] - centers_mean[[0, 1]], dim=1
     ).mean()
-    # avg_scene_radii = torch.norm(centers - centers_mean, dim=1).mean()
-    avg_height = centers_mean[1]
+
+    avg_height = centers_mean[2]
 
     trajectory_camtoworlds = []
-    world_up = torch.tensor([0.0, -1.0, 0.0])
+    world_up = torch.tensor([0.0, 0.0, -1.0])
 
     for t in torch.linspace(0, 1, num_steps):
         theta = 2 * math.pi * num_rotations * t
@@ -41,18 +42,22 @@ def get_spiral_trajectory(dataset, num_steps=60, num_rotations=2):
         cam_pos = torch.tensor(
             [
                 centers_mean[0] + avg_scene_radii * math.cos(theta),
+                centers_mean[1] + avg_scene_radii * math.sin(theta),
                 avg_height,
-                centers_mean[2] + avg_scene_radii * math.sin(theta),
             ]
         )
 
-        forward = centers_mean - cam_pos
+        tilt_offset = avg_scene_radii * camera_down_tilt
+        look_at_target = centers_mean.clone()
+        look_at_target[2] -= tilt_offset
+
+        forward = look_at_target - cam_pos
         forward /= torch.norm(forward)
 
         right = torch.cross(forward, world_up)
         right /= torch.norm(right)
 
-        up_true = torch.cross(forward, right)
+        up_true = torch.cross(right, forward)
         up_true /= torch.norm(up_true)
 
         camtoworld = torch.eye(4)
@@ -70,14 +75,14 @@ def get_spiral_trajectory(dataset, num_steps=60, num_rotations=2):
 def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_degree):
     images = []
     depths = []
-    # trajectory = generate_viser_spiral(dataset, num_steps=len(dataset), num_rotations=1)
+    trajectory = get_spiral_trajectory(dataset, num_steps=len(dataset), num_rotations=1)
 
     print(f"rendering {len(dataset)} images...")
     for i in tqdm.tqdm(range(len(dataset))):
         data = dataset[i]
 
-        camtoworld = data["camtoworld"].to(device)
-        # camtoworld = trajectory[i].to(device)
+        # camtoworld = data["camtoworld"].to(device)
+        camtoworld = trajectory[i].to(device)
         # print(camtoworld)
         K = data["K"].to(device)
 
@@ -105,16 +110,18 @@ def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_d
         render_colors = render_colors[:, :, :, :3]
 
         # uncomment to debug
-        # import cv2
+        import cv2
 
-        # display_image = (depth.squeeze().cpu().numpy() * 255).astype("uint8")
-        # cv2.imshow("Rendered Image", display_image)
-        # cv2.waitKey(1)
+        display_image = (
+            render_colors.squeeze().cpu().numpy()[:, :, ::-1] * 255
+        ).astype("uint8")
+        cv2.imshow("Rendered Image", display_image)
+        cv2.waitKey(1)
 
         images.append(render_colors.squeeze().permute(2, 1, 0))
         depths.append(render_colors.squeeze().permute(2, 1, 0))
 
-    # cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
     images = torch.stack(images, dim=0)
     depths = torch.stack(depths, dim=0)
 

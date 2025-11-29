@@ -142,11 +142,14 @@ def main(local_rank: int, world_rank, world_size: int, args):
             "alpha": "RGB",
         }
 
+        # Apply opacity multiplier for splat visibility control
+        adjusted_opacities = opacities * render_tab_state.splat_opacity
+
         render_colors, render_alphas, info = rasterization(
             means,  # [N, 3]
             quats,  # [N, 4]
             scales,  # [N, 3]
-            opacities,  # [N]
+            adjusted_opacities,  # [N]
             colors,  # [N, S, 3]
             viewmat[None],  # [1, 4, 4]
             K[None],  # [1, 3, 3]
@@ -203,6 +206,17 @@ def main(local_rank: int, world_rank, world_size: int, args):
         return renders
 
     server = viser.ViserServer(port=args.port, verbose=False)
+
+    # For debugging axis
+    # Add coordinate frame axes (X=red, Y=green, Z=blue)
+    server.scene.add_frame(
+        "/world",
+        wxyz=(1.0, 0.0, 0.0, 0.0),  # Identity quaternion
+        position=(0.0, 0.0, 0.0),
+        axes_length=1.0,
+        axes_radius=0.02,
+    )
+
     _ = GsplatViewer(
         server=server,
         render_fn=viewer_render_fn,

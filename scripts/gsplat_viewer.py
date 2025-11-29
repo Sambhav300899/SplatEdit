@@ -17,16 +17,17 @@ class GsplatRenderTabState(RenderTabState):
     radius_clip: float = 0.0
     eps2d: float = 0.3
     backgrounds: Tuple[float, float, float] = (0.0, 0.0, 0.0)
-    render_mode: Literal[
-        "rgb", "depth(accumulated)", "depth(expected)", "alpha"
-    ] = "rgb"
+    render_mode: Literal["rgb", "depth(accumulated)", "depth(expected)", "alpha"] = (
+        "rgb"
+    )
     normalize_nearfar: bool = False
     inverse: bool = False
-    colormap: Literal[
-        "turbo", "viridis", "magma", "inferno", "cividis", "gray"
-    ] = "turbo"
+    colormap: Literal["turbo", "viridis", "magma", "inferno", "cividis", "gray"] = (
+        "turbo"
+    )
     rasterize_mode: Literal["classic", "antialiased"] = "classic"
     camera_model: Literal["pinhole", "ortho", "fisheye"] = "pinhole"
+    splat_opacity: float = 1.0
 
 
 class GsplatViewer(Viewer):
@@ -219,6 +220,20 @@ class GsplatViewer(Viewer):
                     self.render_tab_state.camera_model = camera_model_dropdown.value
                     self.rerender(_)
 
+                splat_opacity_slider = server.gui.add_slider(
+                    "Splat Opacity",
+                    min=0.0,
+                    max=1.0,
+                    step=0.01,
+                    initial_value=self.render_tab_state.splat_opacity,
+                    hint="Control the opacity/visibility of Gaussian splats.",
+                )
+
+                @splat_opacity_slider.on_update
+                def _(_) -> None:
+                    self.render_tab_state.splat_opacity = splat_opacity_slider.value
+                    self.rerender(_)
+
         self._rendering_tab_handles.update(
             {
                 "total_gs_count_number": total_gs_count_number,
@@ -233,6 +248,7 @@ class GsplatViewer(Viewer):
                 "colormap_dropdown": colormap_dropdown,
                 "rasterize_mode_dropdown": rasterize_mode_dropdown,
                 "camera_model_dropdown": camera_model_dropdown,
+                "splat_opacity_slider": splat_opacity_slider,
             }
         )
         super()._populate_rendering_tab()
