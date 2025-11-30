@@ -46,7 +46,7 @@ import ddim_inversion
 @dataclass
 class Config:
     # Disable viewer
-    disable_viewer: bool = False
+    disable_viewer: bool = True
     # Path to the .pt files. If provide, it will skip training and run evaluation only.
     ckpt: Optional[List[str]] = None
     # Path to a checkpoint file to initialize the model from.
@@ -196,10 +196,13 @@ class Config:
     source_prompt: str = ""
 
     # prompt to use for editing
-    prompt: str = "do not edit the image"
+    prompt: str = ""
 
     # How many iterations to update after editing
     update_iters: int = 2500
+
+    # How much data to use for training, data is sampled randomly
+    frac: float = 1.0
 
     def adjust_steps(self, factor: float):
         self.eval_steps = [int(i * factor) for i in self.eval_steps]
@@ -384,11 +387,14 @@ class Runner:
             normalize=cfg.normalize_world_space,
             test_every=cfg.test_every,
         )
+        n_samples = int(len(self.parser.image_names) * cfg.frac)
+        print("Using", n_samples, "images for training")
         self.trainset = Dataset(
             self.parser,
             split="train",
             patch_size=cfg.patch_size,
             load_depths=cfg.depth_loss,
+            n_samples=n_samples,
         )
         self.valset = Dataset(self.parser, split="val")
         self.scene_scale = self.parser.scene_scale * 1.1 * cfg.global_scale
@@ -597,9 +603,7 @@ class Runner:
         device = self.device
 
         ddim_editor = ddim_inversion.DDIMInversionEditor(
-            model_name=cfg.model_name,
             device=device,
-            dtype=cfg.dtype,
         )
 
         for i, data in tqdm.tqdm(
@@ -627,38 +631,99 @@ class Runner:
 
             transform = torchvision.transforms.Compose(
                 [
-                    torchvision.transforms.ToTensor(),
                     torchvision.transforms.Resize((height, width), antialias=True),
                 ]
             )
 
             for j, img_id in enumerate(img_ids):
-                # [H, W, C] -> [C, H, W]
-                ip2p_input = colors[j]
-                print(colors[j].shape)
-                exit()
+                # print(colors[j].shape)
+                # exit()
+                edited = ddim_editor.edit(
+                    colors[j].permute(2, 0, 1),
+                    input_image_prompt=cfg.source_prompt,
+                    edit_prompt=cfg.prompt,
+                    num_steps=50,
+                    start_step=20,
+                    guidance_scale=4.5,
+                ).cpu()
 
-                # ddim_editor.edit()
-                # ip2p_img = pipe(
-                #     prompt,
-                #     image=ip2p_input,
-                #     num_inference_steps=cfg.pix2pix_iterations,
-                #     image_guidance_scale=cfg.image_guidance_scale,
-                #     output_type="np",
-                #     guidance_scale=cfg.guidance_scale,
-                # ).images[0]
+                # print(edited.shape, colors[j].shape, edited.max())
+                # exit()
 
-                # # [C, H, W] -> [H, W, C]
-                # ip2p_img = transform(ip2p_img).permute(1, 2, 0)
-                # cached_transformed_imgs[img_id] = ip2p_img
+                edited = transform(edited).squeeze().permute(1, 2, 0)
+                cached_transformed_imgs[img_id] = edited
 
                 # for debugging #
-                # os.makedirs("view_renders", exist_ok=True)
-                # import matplotlib.pyplot as plt
-                # plt.figure()
-                # plt.imshow(ip2p_img)
-                # plt.savefig("view_renders/{}.png".format(img_ids[0]))
-                # plt.close()
+                os.makedirs("view_renders", exist_ok=True)
+                import matplotlib.pyplot as plt
+
+                plt.figure()
+                plt.imshow(edited)
+                plt.savefig("view_renders/{}.png".format(img_ids[0]))
+                plt.close()
+
+        return cached_transformed_imgs
+
+    @torch.no_grad()
+    def render_and_edit_ddim_with_depth(self, loader):
+        cached_transformed_imgs = {}
+        cfg = self.cfg
+        device = self.device
+
+        ddim_editor = ddim_inversion.DDIMInversionEditorDepth(
+            device=device,
+        )
+
+        for i, data in tqdm.tqdm(
+            enumerate(loader),
+            total=len(loader) * loader.batch_size,
+            desc="Running DDIM Inversion",
+        ):
+            camtoworlds = data["camtoworld"].to(device)
+            Ks = data["K"].to(device)
+            pixels = data["image"].to(device) / 255.0
+            masks = data["mask"].to(device) if "mask" in data else None
+            height, width = pixels.shape[1:3]
+            img_ids = data["image_id"].tolist()
+
+            colors, _, _ = self.rasterize_splats(
+                camtoworlds=camtoworlds,
+                Ks=Ks,
+                width=width,
+                height=height,
+                sh_degree=cfg.sh_degree,
+                near_plane=cfg.near_plane,
+                far_plane=cfg.far_plane,
+                masks=masks,
+                render_mode="RGB+ED",
+            )
+
+            depth = colors[:, :, :, -1:]
+            colors = colors[:, :, :, :3]
+
+            for j, img_id in enumerate(img_ids):
+                # print(colors[j].max(), depth[j].shape)
+                # exit()
+                edited = ddim_editor.edit(
+                    input_image=colors[j].permute(2, 0, 1),
+                    depth=depth[j].permute(2, 0, 1),
+                    source_prompt=cfg.source_prompt,
+                    edit_prompt=cfg.prompt,
+                    controlnet_conditioning_scale=0.7,
+                    guidance_scale=3.5,
+                    num_inference_steps=50,
+                )
+
+                cached_transformed_imgs[img_id] = edited
+
+                # for debugging #
+                os.makedirs("view_renders", exist_ok=True)
+                import matplotlib.pyplot as plt
+
+                plt.figure()
+                plt.imshow(edited)
+                plt.savefig("view_renders/{}.png".format(img_ids[0]))
+                plt.close()
 
         return cached_transformed_imgs
 
@@ -718,6 +783,7 @@ class Runner:
 
         # Training loop.
         global_tic = time.time()
+        cached_edited_imgs = self.render_and_edit_ddim_with_depth(trainloader)
 
         pbar = tqdm.tqdm(range(init_step, max_steps))
         for step in pbar:
@@ -732,16 +798,6 @@ class Runner:
             except StopIteration:
                 trainloader_iter = iter(trainloader)
                 data = next(trainloader_iter)
-
-            if step % cfg.update_iters == 0:
-                print(
-                    "Updating views  with instructPix2Pix, Splatting optimization will run for 2500 steps after this"
-                )
-
-                if cfg.ip2p_method == "iterative":
-                    cached_edited_imgs = self.render_and_get_ip2p_idu(trainloader)
-                else:
-                    cached_edited_imgs = self.render_and_get_ip2p_naive(trainloader)
 
             camtoworlds = camtoworlds_gt = data["camtoworld"].to(device)  # [1, 4, 4]
             Ks = data["K"].to(device)  # [1, 3, 3]

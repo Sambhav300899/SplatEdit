@@ -209,6 +209,9 @@ class Config:
     # How many iterations to update after editing
     update_iters: int = 2500
 
+    # How much data to use for training, data is sampled randomly
+    frac: float = 1.0
+
     def adjust_steps(self, factor: float):
         self.eval_steps = [int(i * factor) for i in self.eval_steps]
         self.save_steps = [int(i * factor) for i in self.save_steps]
@@ -392,11 +395,14 @@ class Runner:
             normalize=cfg.normalize_world_space,
             test_every=cfg.test_every,
         )
+        n_samples = int(len(self.parser.image_names) * cfg.frac)
+        print("Using", n_samples, "images for training")
         self.trainset = Dataset(
             self.parser,
             split="train",
             patch_size=cfg.patch_size,
             load_depths=cfg.depth_loss,
+            n_samples=n_samples,
         )
         self.valset = Dataset(self.parser, split="val")
         self.scene_scale = self.parser.scene_scale * 1.1 * cfg.global_scale
@@ -671,12 +677,13 @@ class Runner:
                 cached_transformed_imgs[img_id] = ip2p_img
 
                 # for debugging #
-                # import matplotlib.pyplot as plt
-                # os.makedirs("view_renders", exist_ok=True)
-                # plt.figure()
-                # plt.imshow(ip2p_img)
-                # plt.savefig("view_renders/{}.png".format(img_ids[0]))
-                # plt.close()
+                import matplotlib.pyplot as plt
+
+                os.makedirs("view_renders", exist_ok=True)
+                plt.figure()
+                plt.imshow(ip2p_img)
+                plt.savefig("view_renders/{}.png".format(img_ids[0]))
+                plt.close()
 
         return cached_transformed_imgs
 
@@ -728,7 +735,8 @@ class Runner:
 
             for j, img_id in enumerate(img_ids):
                 # [H, W, C] -> [C, H, W]
-                ip2p_input = colors[j].squeeze(0).permute(2, 0, 1)
+                ip2p_input = colors[j].permute(2, 0, 1).unsqueeze(0)
+
                 ip2p_img = pipe(
                     prompt,
                     image=ip2p_input,
@@ -743,12 +751,13 @@ class Runner:
                 cached_transformed_imgs[img_id] = ip2p_img
 
                 # for debugging #
-                # os.makedirs("view_renders", exist_ok=True)
-                # import matplotlib.pyplot as plt
-                # plt.figure()
-                # plt.imshow(ip2p_img)
-                # plt.savefig("view_renders/{}.png".format(img_ids[0]))
-                # plt.close()
+                os.makedirs("view_renders", exist_ok=True)
+                import matplotlib.pyplot as plt
+
+                plt.figure()
+                plt.imshow(ip2p_img)
+                plt.savefig("view_renders/{}.png".format(img_ids[0]))
+                plt.close()
 
         return cached_transformed_imgs
 
