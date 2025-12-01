@@ -12,8 +12,7 @@ from dataclasses import dataclass
 class Config:
     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
     # edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs/ckpts/ckpt_4999_rank0.pt"
-    # edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs_naive/ckpts/ckpt_2499_rank0.pt"
-    edited_splat_ckpt: str = original_splat_ckpt
+    edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs_naive/ckpts/ckpt_2499_rank0.pt"
 
     data_dir: str = "data/360_v2/garden/"
 
