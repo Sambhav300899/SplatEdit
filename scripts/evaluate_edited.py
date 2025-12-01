@@ -77,14 +77,13 @@ def get_spiral_trajectory(dataset, num_steps=60, num_rotations=2, camera_down_ti
 def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_degree):
     images = []
     depths = []
-    trajectory = get_spiral_trajectory(dataset, num_steps=len(dataset), num_rotations=1)
+    # trajectory = get_spiral_trajectory(dataset, num_steps=len(dataset), num_rotations=1)
 
     print(f"rendering {len(dataset)} images...")
     for i in tqdm.tqdm(range(len(dataset))):
         data = dataset[i]
 
-        # camtoworld = data["camtoworld"].to(device)
-        camtoworld = trajectory[i].to(device)
+        camtoworld = data["camtoworld"].to(device)
         # print(camtoworld)
         K = data["K"].to(device)
 

@@ -375,10 +375,6 @@ class Dataset:
             step = len(self.indices) // n_samples
             self.indices = self.indices[::step][:n_samples]
 
-        print(self.indices)
-
-        exit()
-
     def __len__(self):
         return len(self.indices)
 

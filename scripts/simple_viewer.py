@@ -209,13 +209,13 @@ def main(local_rank: int, world_rank, world_size: int, args):
 
     # For debugging axis
     # Add coordinate frame axes (X=red, Y=green, Z=blue)
-    server.scene.add_frame(
-        "/world",
-        wxyz=(1.0, 0.0, 0.0, 0.0),  # Identity quaternion
-        position=(0.0, 0.0, 0.0),
-        axes_length=1.0,
-        axes_radius=0.02,
-    )
+    # server.scene.add_frame(
+    #     "/world",
+    #     wxyz=(1.0, 0.0, 0.0, 0.0),  # Identity quaternion
+    #     position=(0.0, 0.0, 0.0),
+    #     axes_length=1.0,
+    #     axes_radius=0.02,
+    # )
 
     _ = GsplatViewer(
         server=server,

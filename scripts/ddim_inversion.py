@@ -9,6 +9,8 @@ import torchvision
 import tqdm
 import cv2
 import torch
+import utils
+import random
 
 
 class DDIMInversionEditor:
@@ -212,20 +214,29 @@ class DDIMInversionEditorDepth:
             diffusion_ckpt, subfolder="scheduler"
         )
 
-        controlnet = ControlNetModel.from_pretrained("lllyasviel/sd-controlnet-depth")
+        controlnet = ControlNetModel.from_pretrained(
+            "lllyasviel/sd-controlnet-depth", torch_dtype=torch.float16
+        )
 
         self.pipe = StableDiffusionControlNetPipeline.from_pretrained(
-            diffusion_ckpt, controlnet=controlnet, scheduler=self.ddim_scheduler
+            diffusion_ckpt,
+            controlnet=controlnet,
+            scheduler=self.ddim_scheduler,
+            safety_checker=None,
+            requires_safety_checker=False,
+            torch_dtype=torch.float16,
         ).to(self.device)
 
     @torch.no_grad()
     def image2latent(self, image):
+        image = image.to(torch.float16)  # Convert to FP16 to match VAE dtype
         image = image * 2 - 1
         latents = self.pipe.vae.encode(image)["latent_dist"].mean
         latents = latents * 0.18215
         return latents
 
     def depth2disparity(self, depth):
+        depth = depth.to(torch.float16)  # Convert to FP16 to match pipeline dtype
         disparity = 1 / (depth + 1e-5)
         disparity_map = disparity / torch.max(disparity)
         disparity_map = torch.concatenate(
@@ -289,6 +300,235 @@ class DDIMInversionEditorDepth:
 
         edited_image = cv2.resize(edited_image, original_size[::-1])
         return torch.Tensor(edited_image)
+
+
+class DDIMInversionEditorDepthMultiview:
+    def __init__(self, device="cuda"):
+        diffusion_ckpt = "runwayml/stable-diffusion-v1-5"
+        self.device = device
+
+        self.ddim_scheduler = DDIMScheduler.from_pretrained(
+            diffusion_ckpt, subfolder="scheduler"
+        )
+        self.ddim_inverser = DDIMInverseScheduler.from_pretrained(
+            diffusion_ckpt, subfolder="scheduler"
+        )
+
+        controlnet = ControlNetModel.from_pretrained(
+            "lllyasviel/sd-controlnet-depth", torch_dtype=torch.float16
+        )
+
+        self.pipe = StableDiffusionControlNetPipeline.from_pretrained(
+            diffusion_ckpt,
+            controlnet=controlnet,
+            scheduler=self.ddim_scheduler,
+            safety_checker=None,
+            requires_safety_checker=False,
+            torch_dtype=torch.float16,
+        ).to(self.device)
+
+    @torch.no_grad()
+    def image2latent(self, image):
+        image = image.to(torch.float16)  # Convert to FP16 to match VAE dtype
+        image = image * 2 - 1
+        latents = self.pipe.vae.encode(image)["latent_dist"].mean
+        latents = latents * 0.18215
+        return latents
+
+    def depth2disparity(self, depth):
+        depth = depth.to(torch.float16)  # Convert to FP16 to match VAE dtype
+        disparity = 1 / (depth + 1e-5)
+        disparity_map = disparity / torch.max(disparity)
+        disparity_map = torch.concatenate(
+            [disparity_map, disparity_map, disparity_map], dim=0
+        )
+        return disparity_map[None]
+
+    def run_edits(
+        self,
+        idx2image: dict,
+        idx2depth: dict,
+        idxs,
+        edit_prompt,
+        source_prompt,
+        negative_prompt="",
+        controlnet_conditioning_scale=1.0,
+        guidance_scale=3.5,
+        num_inference_steps=100,
+        num_ref_views=4,
+        bs=1,
+    ):
+        idxs = sorted(idxs)
+        partition_size = len(idxs) // num_ref_views
+
+        ref_indices = []
+        for i in range(num_ref_views):
+            ref_indices.append(
+                random.choice(idxs[i * partition_size : (i + 1) * partition_size])
+            )
+
+        print(f"Using {ref_indices} as reference views")
+
+        print("Performing DDIM inversion on reference views...")
+        ref_inverted_latents = []
+        ref_disparities = []
+
+        resize_transform = torchvision.transforms.Resize((512, 512))
+        resize_to_orig = torchvision.transforms.Resize(
+            (idx2depth[idxs[0]].shape[1], idx2depth[idxs[0]].shape[2])
+        )
+
+        idx2edited = {}
+
+        ref_images = torch.cat(
+            [
+                idx2image[ref_index].unsqueeze(0).to(self.device)
+                for ref_index in ref_indices
+            ],
+            dim=0,
+        )
+        ref_disparities = torch.cat(
+            [
+                self.depth2disparity(idx2depth[ref_index]).to(self.device)
+                for ref_index in ref_indices
+            ],
+            dim=0,
+        )
+
+        ref_images = resize_transform(ref_images)
+        ref_disparities = resize_transform(ref_disparities)
+        ref_rgb_latents = self.image2latent(ref_images)
+
+        self.pipe.scheduler = self.ddim_inverser
+        ref_inverted_latents, _ = self.pipe(
+            prompt=[source_prompt] * num_ref_views,
+            num_inference_steps=num_inference_steps,
+            latents=ref_rgb_latents,
+            image=ref_disparities,
+            return_dict=False,
+            guidance_scale=0,  # No CFG for inversion
+            output_type="latent",
+        )
+
+        # Process chunks
+        for idx in tqdm.tqdm(range(0, len(idxs), bs), total=bs):
+            batch_idxs = idxs[idx : idx + bs]
+            print(f"Editing chunk: {batch_idxs}")
+
+            # Perform DDIM inversion on chunk images
+            batch_imgs = torch.cat(
+                [
+                    idx2image[img_idx].unsqueeze(0).to(self.device)
+                    for img_idx in batch_idxs
+                ],
+                dim=0,
+            )
+            batch_disparities = torch.cat(
+                [
+                    self.depth2disparity(idx2depth[img_idx]).to(self.device)
+                    for img_idx in batch_idxs
+                ],
+                dim=0,
+            )
+
+            batch_imgs = resize_transform(batch_imgs)
+            batch_disparities = resize_transform(batch_disparities)
+
+            batch_latents = self.image2latent(batch_imgs)
+
+            self.pipe.scheduler = self.ddim_inverser
+
+            actual_batch_size = len(batch_idxs)
+            source_prompts = [source_prompt] * actual_batch_size
+
+            batch_inverted_latents, _ = self.pipe(
+                prompt=source_prompts,
+                num_inference_steps=num_inference_steps,
+                latents=batch_latents,
+                image=batch_disparities,
+                return_dict=False,
+                guidance_scale=0,
+                output_type="latent",
+            )
+
+            # Concatenate reference views with chunk data
+            disp_ctrl_batch = torch.cat((ref_disparities, batch_disparities), dim=0)
+            latents_batch = torch.cat(
+                (ref_inverted_latents, batch_inverted_latents), dim=0
+            )
+
+            # Run forward sampling with DDIM scheduler
+
+            edit_prompts = [edit_prompt] * (num_ref_views + actual_batch_size)
+            negative_prompts = [negative_prompt] * (num_ref_views + actual_batch_size)
+
+            self.pipe.scheduler = self.ddim_scheduler
+            edited_batch = self.pipe(
+                prompt=edit_prompts,
+                negative_prompt=negative_prompts,
+                latents=latents_batch,
+                image=disp_ctrl_batch,
+                num_inference_steps=num_inference_steps,
+                guidance_scale=guidance_scale,
+                controlnet_conditioning_scale=controlnet_conditioning_scale,
+                eta=0.0,
+                output_type="pt",
+            ).images[num_ref_views:]  # Skip reference views in output
+
+            edited_batch = resize_to_orig(
+                torch.Tensor(edited_batch).permute(0, 3, 1, 2)
+            )
+
+            for j, img_idx in enumerate(batch_idxs):
+                idx2edited[img_idx] = edited_batch[j].squeeze().permute(1, 2, 0)
+
+            # to debug
+            import matplotlib.pyplot as plt
+            import os
+
+            os.makedirs("view_renders", exist_ok=True)
+            for j, img_idx in enumerate(batch_idxs):
+                fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+                # Original image
+                original_img = (
+                    resize_to_orig(batch_imgs)[j].permute(1, 2, 0).cpu().numpy()
+                )
+                axes[0].imshow(original_img)
+                axes[0].set_title(f"Original Image {img_idx}")
+                axes[0].axis("off")
+
+                # Edited image
+                edited_img = edited_batch[j].permute(1, 2, 0).cpu().numpy()
+                axes[1].imshow(edited_img)
+                axes[1].set_title(f"Edited Image {img_idx}")
+                axes[1].axis("off")
+
+                plt.tight_layout()
+                plt.savefig(f"view_renders/{img_idx}.png")
+                plt.close()
+
+        return idx2edited
+
+        # self.pipe.scheduler = self.ddim_scheduler
+        # self.pipe.unet.set_attn_processor(
+        #     processor=utils.CrossViewAttnProcessor(
+        #         self_attn_coeff=0.6, unet_chunk_size=2
+        #     )
+        # )
+        # self.pipe.controlnet.set_attn_processor(
+        #     processor=utils.CrossViewAttnProcessor(self_attn_coeff=0, unet_chunk_size=2)
+        # )
+
+        # ref_disparity_list = []
+        # ref_z0_list = []
+
+        # for ref_idx in self.ref_indices:
+        #     ref_data = deepcopy(self.datamanager.train_data[ref_idx])
+        #     ref_disparity = self.depth2disparity(ref_data["depth_image"])
+        #     ref_z0 = ref_data["z_0_image"]
+        #     ref_disparity_list.append(ref_disparity)
+        #     ref_z0_list.append(ref_z0)
 
 
 # # for debugging

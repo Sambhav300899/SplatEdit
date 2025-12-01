@@ -1,0 +1,252 @@
+--- CONSENSUS CAPTION ---
+Most frequent caption: 'there is a bike that is parked on a bench in the grass'
+(Appeared in 68 out of 194 frames)
+
+--- ALL UNIQUE CAPTIONS AND THEIR COUNTS ---
+'there is a bike that is parked on a bench in the grass': 68 times
+'there is a bike parked on a bench in the park': 15 times
+'there is a bike that is parked on a bench in the park': 14 times
+'there is a bike leaning against a bench in the grass': 13 times
+'there is a bike parked on the side of the road': 8 times
+'there is a bike leaning against a bench on the side of the road': 7 times
+'there is a bike that is parked next to a bench': 6 times
+'there is a bench that is sitting on the side of the road': 6 times
+'there is a bike parked on a bench in the grass': 5 times
+'there is a black bench sitting on the side of a road': 3 times
+'there is a bench that is sitting in the grass by the road': 3 times
+'there is a bike that is parked on the grass in the park': 2 times
+'there is a bike that is sitting on a bench in the grass': 2 times
+'there is a bike that is parked in the grass near a tree': 2 times
+'there is a black bench sitting in the middle of a park': 2 times
+'there is a bike parked next to a bench in the grass': 2 times
+'there is a bike parked on the bench next to the grass': 2 times
+'there is a bike that is parked on the side of the road': 1 times
+'there is a bike that is parked on the grass by a bench': 1 times
+'there is a bike that is parked on the grass by a tree': 1 times
+'there is a bike that is parked on the back of a truck': 1 times
+'there is a bike that is sitting on the back of a truck': 1 times
+'there is a motorcycle parked under a tree in a park': 1 times
+'there is a bike that is parked in the grass by a tree': 1 times
+'there is a motorcycle that is parked in the grass': 1 times
+'there is a bike parked on the grass in the park': 1 times
+'there is a man that is standing on a skateboard in the street': 1 times
+'there is a bike that is parked on a rack in the grass': 1 times
+'there is a zebra standing in the grass near a tree': 1 times
+'there is a bench that is sitting in the grass': 1 times
+'there is a bike that is sitting on a bench in the park': 1 times
+'there is a black bench in the middle of a park': 1 times
+'there is a bike that is sitting on top of a bench': 1 times
+'there is a bike that is parked on the ground next to a bench': 1 times
+'there is a black bench in the middle of a grassy area': 1 times
+'there is a black bench in the middle of a grassy field': 1 times
+'there is a bike leaning against a bench on the side of a road': 1 times
+'there is a bike parked next to a bench in the park': 1 times
+'there is a bike parked on a bench next to a path': 1 times
+'there is a bike parked on the bench next to a bike': 1 times
+'there is a bike parked on the bench in the park': 1 times
+'there is a bike parked on the side of a road next to a bench': 1 times
+'there is a white bicycle parked on a bench in the park': 1 times
+'there is a bike leaning against a bench on the side of a path': 1 times
+'there is a bike leaning against a bench on a path': 1 times
+'there is a bike parked on the side of a bench': 1 times
+'there is a bike parked on a bench in a park': 1 times
+'there is a bike leaning on a bench in the park': 1 times
+'there is a bicycle parked on the side of the road': 1 times
+'there is a bike that is parked on a bench': 1 times
+'there is a bike that is parked on the grass next to a bench': 1 times
+
+--- INDIVIDUAL IMAGE CAPTIONS ---
+_DSC8679.png: there is a bike that is parked on a bench in the grass
+_DSC8680.png: there is a bike that is parked on the side of the road
+_DSC8681.png: there is a bike that is parked on the grass by a bench
+_DSC8682.png: there is a bike that is parked on the grass in the park
+_DSC8683.png: there is a bike that is parked on a bench in the grass
+_DSC8684.png: there is a bike that is parked on the grass by a tree
+_DSC8685.png: there is a bike that is parked next to a bench
+_DSC8686.png: there is a bike that is parked on the back of a truck
+_DSC8687.png: there is a bike that is parked on a bench in the grass
+_DSC8688.png: there is a bike that is sitting on the back of a truck
+_DSC8689.png: there is a bike that is parked on a bench in the grass
+_DSC8690.png: there is a motorcycle parked under a tree in a park
+_DSC8691.png: there is a bike leaning against a bench in the grass
+_DSC8692.png: there is a bike that is parked in the grass by a tree
+_DSC8693.png: there is a bike leaning against a bench in the grass
+_DSC8694.png: there is a motorcycle that is parked in the grass
+_DSC8695.png: there is a bike leaning against a bench in the grass
+_DSC8696.png: there is a bike parked on the grass in the park
+_DSC8697.png: there is a bike that is parked on a bench in the grass
+_DSC8698.png: there is a man that is standing on a skateboard in the street
+_DSC8699.png: there is a bike that is sitting on a bench in the grass
+_DSC8700.png: there is a bike that is parked in the grass near a tree
+_DSC8701.png: there is a bike that is parked on a bench in the grass
+_DSC8702.png: there is a bike that is parked on a rack in the grass
+_DSC8703.png: there is a bike that is parked on a bench in the grass
+_DSC8704.png: there is a zebra standing in the grass near a tree
+_DSC8705.png: there is a bike that is parked on a bench in the grass
+_DSC8706.png: there is a bike that is parked on a bench in the grass
+_DSC8707.png: there is a bench that is sitting in the grass
+_DSC8708.png: there is a bike that is parked on a bench in the park
+_DSC8709.png: there is a black bench sitting in the middle of a park
+_DSC8710.png: there is a bike that is sitting on a bench in the park
+_DSC8711.png: there is a black bench sitting on the side of a road
+_DSC8712.png: there is a black bench sitting in the middle of a park
+_DSC8713.png: there is a black bench sitting on the side of a road
+_DSC8714.png: there is a black bench in the middle of a park
+_DSC8715.png: there is a bike leaning against a bench in the grass
+_DSC8716.png: there is a bike that is parked in the grass near a tree
+_DSC8717.png: there is a bike leaning against a bench in the grass
+_DSC8718.png: there is a bike that is parked on the grass in the park
+_DSC8719.png: there is a bike leaning against a bench on the side of the road
+_DSC8720.png: there is a bike that is parked on a bench in the grass
+_DSC8721.png: there is a bike leaning against a bench in the grass
+_DSC8722.png: there is a bike that is sitting on a bench in the grass
+_DSC8723.png: there is a bike that is parked next to a bench
+_DSC8724.png: there is a bike that is sitting on top of a bench
+_DSC8725.png: there is a bike that is parked on a bench in the grass
+_DSC8726.png: there is a bike that is parked on a bench in the grass
+_DSC8727.png: there is a bike that is parked on a bench in the grass
+_DSC8728.png: there is a bike that is parked on a bench in the grass
+_DSC8729.png: there is a bike that is parked on a bench in the grass
+_DSC8730.png: there is a bike that is parked on a bench in the grass
+_DSC8731.png: there is a bike that is parked on a bench in the grass
+_DSC8732.png: there is a bike that is parked on a bench in the park
+_DSC8733.png: there is a bike that is parked on a bench in the grass
+_DSC8734.png: there is a bike that is parked on a bench in the park
+_DSC8735.png: there is a bike that is parked on a bench in the grass
+_DSC8736.png: there is a bike that is parked on the ground next to a bench
+_DSC8737.png: there is a bike that is parked on a bench in the grass
+_DSC8738.png: there is a bike that is parked on a bench in the park
+_DSC8739.png: there is a bike that is parked on a bench in the grass
+_DSC8741.png: there is a bike that is parked next to a bench
+_DSC8742.png: there is a bike leaning against a bench in the grass
+_DSC8743.png: there is a bike that is parked on a bench in the park
+_DSC8744.png: there is a bike leaning against a bench in the grass
+_DSC8745.png: there is a bike parked on the side of the road
+_DSC8746.png: there is a bike leaning against a bench in the grass
+_DSC8747.png: there is a bike parked on a bench in the park
+_DSC8748.png: there is a bike parked next to a bench in the grass
+_DSC8749.png: there is a bike parked on a bench in the park
+_DSC8750.png: there is a bike that is parked on a bench in the grass
+_DSC8751.png: there is a bike parked on a bench in the grass
+_DSC8752.png: there is a bike parked on a bench in the park
+_DSC8753.png: there is a bike that is parked on a bench in the grass
+_DSC8754.png: there is a bike parked on a bench in the park
+_DSC8755.png: there is a bike that is parked on a bench in the park
+_DSC8756.png: there is a bike parked on a bench in the park
+_DSC8757.png: there is a bike that is parked on a bench in the grass
+_DSC8758.png: there is a bike parked on a bench in the grass
+_DSC8759.png: there is a bike that is parked on a bench in the park
+_DSC8760.png: there is a bike that is parked on a bench in the grass
+_DSC8761.png: there is a black bench in the middle of a grassy area
+_DSC8762.png: there is a bike that is parked on a bench in the grass
+_DSC8763.png: there is a black bench in the middle of a grassy field
+_DSC8764.png: there is a bench that is sitting on the side of the road
+_DSC8765.png: there is a bench that is sitting in the grass by the road
+_DSC8766.png: there is a bench that is sitting on the side of the road
+_DSC8767.png: there is a black bench sitting on the side of a road
+_DSC8768.png: there is a bench that is sitting in the grass by the road
+_DSC8769.png: there is a bench that is sitting in the grass by the road
+_DSC8770.png: there is a bike leaning against a bench in the grass
+_DSC8771.png: there is a bike parked next to a bench in the grass
+_DSC8772.png: there is a bike leaning against a bench on the side of the road
+_DSC8773.png: there is a bike that is parked on a bench in the grass
+_DSC8774.png: there is a bike that is parked on a bench in the grass
+_DSC8775.png: there is a bike that is parked on a bench in the grass
+_DSC8776.png: there is a bike that is parked on a bench in the grass
+_DSC8777.png: there is a bike that is parked on a bench in the grass
+_DSC8778.png: there is a bike that is parked on a bench in the grass
+_DSC8779.png: there is a bike that is parked on a bench in the park
+_DSC8780.png: there is a bike that is parked on a bench in the grass
+_DSC8781.png: there is a bike that is parked on a bench in the grass
+_DSC8782.png: there is a bike that is parked on a bench in the grass
+_DSC8783.png: there is a bike that is parked on a bench in the grass
+_DSC8784.png: there is a bike that is parked on a bench in the grass
+_DSC8785.png: there is a bike that is parked on a bench in the grass
+_DSC8786.png: there is a bike that is parked on a bench in the grass
+_DSC8787.png: there is a bike that is parked on a bench in the park
+_DSC8788.png: there is a bike that is parked on a bench in the grass
+_DSC8789.png: there is a bike that is parked on a bench in the grass
+_DSC8790.png: there is a bike leaning against a bench on the side of a road
+_DSC8791.png: there is a bike parked next to a bench in the park
+_DSC8792.png: there is a bike leaning against a bench on the side of the road
+_DSC8793.png: there is a bike parked on a bench in the park
+_DSC8794.png: there is a bike parked on a bench next to a path
+_DSC8795.png: there is a bike parked on a bench in the park
+_DSC8796.png: there is a bike parked on the bench next to a bike
+_DSC8797.png: there is a bike parked on a bench in the grass
+_DSC8798.png: there is a bike that is parked on a bench in the grass
+_DSC8799.png: there is a bike parked on a bench in the park
+_DSC8800.png: there is a bike that is parked on a bench in the grass
+_DSC8801.png: there is a bike parked on a bench in the park
+_DSC8802.png: there is a bike leaning against a bench in the grass
+_DSC8803.png: there is a bike parked on a bench in the park
+_DSC8804.png: there is a bike that is parked on a bench in the grass
+_DSC8805.png: there is a bike parked on a bench in the park
+_DSC8806.png: there is a bench that is sitting on the side of the road
+_DSC8807.png: there is a bike parked on the bench in the park
+_DSC8808.png: there is a bike parked on the side of a road next to a bench
+_DSC8809.png: there is a bike parked on a bench in the park
+_DSC8810.png: there is a bike leaning against a bench on the side of the road
+_DSC8811.png: there is a bike parked on the side of the road
+_DSC8812.png: there is a bike that is parked on a bench in the grass
+_DSC8813.png: there is a bike that is parked on a bench in the grass
+_DSC8814.png: there is a bike that is parked on a bench in the grass
+_DSC8815.png: there is a bike that is parked on a bench in the park
+_DSC8816.png: there is a bike that is parked on a bench in the grass
+_DSC8817.png: there is a bike that is parked on a bench in the park
+_DSC8818.png: there is a bike that is parked on a bench in the grass
+_DSC8819.png: there is a white bicycle parked on a bench in the park
+_DSC8820.png: there is a bike that is parked on a bench in the grass
+_DSC8821.png: there is a bike that is parked on a bench in the park
+_DSC8822.png: there is a bike that is parked on a bench in the grass
+_DSC8823.png: there is a bike that is parked on a bench in the park
+_DSC8824.png: there is a bike that is parked on a bench in the grass
+_DSC8825.png: there is a bike parked on a bench in the park
+_DSC8826.png: there is a bike that is parked on a bench in the grass
+_DSC8827.png: there is a bike parked on the side of the road
+_DSC8828.png: there is a bike leaning against a bench on the side of a path
+_DSC8829.png: there is a bike parked on the side of the road
+_DSC8830.png: there is a bike leaning against a bench on a path
+_DSC8831.png: there is a bike parked on the side of the road
+_DSC8832.png: there is a bike leaning against a bench in the grass
+_DSC8833.png: there is a bike parked on the side of the road
+_DSC8834.png: there is a bike leaning against a bench in the grass
+_DSC8835.png: there is a bike parked on the side of a bench
+_DSC8836.png: there is a bike parked on the bench next to the grass
+_DSC8837.png: there is a bike parked on a bench in the park
+_DSC8838.png: there is a bike parked on the bench next to the grass
+_DSC8839.png: there is a bike that is parked on a bench in the grass
+_DSC8840.png: there is a bike that is parked on a bench in the grass
+_DSC8841.png: there is a bike that is parked on a bench in the grass
+_DSC8842.png: there is a bike that is parked on a bench in the grass
+_DSC8843.png: there is a bike that is parked on a bench in the grass
+_DSC8844.png: there is a bike that is parked on a bench in the grass
+_DSC8845.png: there is a bike parked on a bench in a park
+_DSC8846.png: there is a bike that is parked on a bench in the grass
+_DSC8847.png: there is a bike parked on a bench in the park
+_DSC8848.png: there is a bike leaning on a bench in the park
+_DSC8849.png: there is a bench that is sitting on the side of the road
+_DSC8850.png: there is a bench that is sitting on the side of the road
+_DSC8851.png: there is a bench that is sitting on the side of the road
+_DSC8852.png: there is a bike that is parked on a bench in the grass
+_DSC8853.png: there is a bike parked on the side of the road
+_DSC8854.png: there is a bike that is parked on a bench in the grass
+_DSC8855.png: there is a bike parked on the side of the road
+_DSC8856.png: there is a bike that is parked on a bench in the grass
+_DSC8857.png: there is a bicycle parked on the side of the road
+_DSC8858.png: there is a bike that is parked on a bench in the grass
+_DSC8859.png: there is a bike that is parked on a bench in the park
+_DSC8860.png: there is a bike that is parked on a bench
+_DSC8861.png: there is a bike that is parked on the grass next to a bench
+_DSC8862.png: there is a bike that is parked on a bench in the grass
+_DSC8863.png: there is a bike leaning against a bench on the side of the road
+_DSC8864.png: there is a bike parked on a bench in the grass
+_DSC8865.png: there is a bike parked on a bench in the grass
+_DSC8866.png: there is a bike that is parked on a bench in the grass
+_DSC8867.png: there is a bike that is parked on a bench in the grass
+_DSC8868.png: there is a bike that is parked on a bench in the grass
+_DSC8869.png: there is a bike leaning against a bench on the side of the road
+_DSC8870.png: there is a bike leaning against a bench on the side of the road
+_DSC8871.png: there is a bike that is parked next to a bench
+_DSC8872.png: there is a bike that is parked next to a bench
+_DSC8873.png: there is a bike that is parked next to a bench
