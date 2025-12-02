@@ -57,7 +57,7 @@ gdown 1x4pf17vjt9IslKorC4BMZNZogyFsFiXS
 ```
 CUDA_VISIBLE_DEVICES=0 \
 python scripts/simple_trainer.py default \
-  --data_dir data/360_v2/garden/ \
+  --data_dir data/360_v2/edited_garden/ \
   --data_factor 8 \
   --result_dir results/garden \
   --max_steps 20000
