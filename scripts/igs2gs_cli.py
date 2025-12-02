@@ -40,10 +40,32 @@ from gsplat_viewer import GsplatViewer, GsplatRenderTabState
 from nerfview import CameraState, RenderTabState, apply_float_colormap
 
 import torchvision
-# import ip2p
-# from diffusers import (
-#     StableDiffusionInstructPix2PixPipeline,
-# )
+import subprocess
+import json
+import base64
+from io import BytesIO
+from PIL import Image
+import tempfile
+import os
+
+FLOWEDIT_ENV = "flowedit" 
+FLOWEDIT_SCRIPT = "scripts/flowedit_cli.py"
+
+def tensor_to_base64(t):
+    """Convert CHW tensor -> base64 PNG"""
+    t = t.clamp(0,1)
+    arr = (t.permute(1,2,0).cpu().numpy()*255).astype("uint8")
+    img = Image.fromarray(arr)
+    buf = BytesIO()
+    img.save(buf, format="PNG")
+    return base64.b64encode(buf.getvalue()).decode("utf-8")
+
+
+def base64_to_tensor(b64):
+    img_bytes = base64.b64decode(b64)
+    img = Image.open(BytesIO(img_bytes)).convert("RGB")
+    np_img = np.array(img).astype("float32")/255.0
+    return torch.from_numpy(np_img).permute(2,0,1)
 
 
 @dataclass
@@ -599,31 +621,15 @@ class Runner:
         return render_colors, render_alphas, info
 
     @torch.no_grad()
-    def render_and_get_ip2p_idu(self, loader):
+    def render_and_get_flowedit_naive(self, loader):
         cached_transformed_imgs = {}
         cfg = self.cfg
         device = self.device
 
-        prompt = cfg.prompt
-        instruct_p2p = ip2p.InstructPix2Pix(
-            device=torch.device(device), ip2p_use_full_precision=False
-        )
-
-        text_embedding = instruct_p2p.pipe._encode_prompt(
-            prompt,
-            device=device,
-            num_images_per_prompt=1,
-            do_classifier_free_guidance=True,
-            negative_prompt="",
-        )
-
-        instruct_p2p.pipe.set_progress_bar_config(disable=True)
-        instruct_p2p.pipe.enable_attention_slicing()
-
         for i, data in tqdm.tqdm(
             enumerate(loader),
             total=len(loader) * loader.batch_size,
-            desc="Generating InstructPix2Pix images (viewer will be laggy right now)",
+            desc="Generating FlowEdit (naive)"
         ):
             camtoworlds = data["camtoworld"].to(device)
             Ks = data["K"].to(device)
@@ -643,63 +649,61 @@ class Runner:
                 masks=masks,
             )
 
-            transform = torchvision.transforms.Compose(
-                [
-                    torchvision.transforms.Resize((height, width), antialias=True),
-                ]
-            )
-
             for j, img_id in enumerate(img_ids):
-                # [H, W, C] -> [C, H, W]
-                ip2p_input = colors[j].squeeze(0).permute(2, 0, 1)
+                rendered_chw = colors[j].permute(2, 0, 1)
+                b64 = tensor_to_base64(rendered_chw)
 
-                ip2p_img = (
-                    instruct_p2p.edit_image(
-                        text_embeddings=text_embedding,
-                        image=ip2p_input.unsqueeze(0),
-                        image_cond=pixels[j].permute(2, 0, 1).unsqueeze(0),
-                        guidance_scale=cfg.guidance_scale,
-                        image_guidance_scale=cfg.image_guidance_scale,
-                        diffusion_steps=cfg.pix2pix_iterations,
-                    )[0]
-                    .float()
-                    .cpu()
-                )
+                request_dict = {
+                    "image": b64,
+                    "src_prompt": "",
+                    "tar_prompt": cfg.prompt,
+                }
 
-                # # [C, H, W] -> [H, W, C]
-                ip2p_img = transform(ip2p_img).permute(1, 2, 0)
-                cached_transformed_imgs[img_id] = ip2p_img
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as tmp:
+                    tmp_path = tmp.name
+                    tmp.write(json.dumps(request_dict).encode())
 
-                # for debugging #
-                # import matplotlib.pyplot as plt
-                # os.makedirs("view_renders", exist_ok=True)
-                # plt.figure()
-                # plt.imshow(ip2p_img)
-                # plt.savefig("view_renders/{}.png".format(img_ids[0]))
-                # plt.close()
+                try:
+                    out = subprocess.check_output(
+                        [
+                            "conda",
+                            "run",
+                            "-n",
+                            FLOWEDIT_ENV,
+                            "python",
+                            FLOWEDIT_SCRIPT,
+                            "--request_file",
+                            tmp_path,
+                        ],
+                        stderr=subprocess.DEVNULL,
+                    )
+                # except Exception as e:
+                #     edited_tensor= rendered
+                finally:
+                    os.remove(tmp_path)
+
+                result = json.loads(out.decode())
+                edited_b64 = result["edited"]
+                edited_chw = base64_to_tensor(edited_b64)  # [C, H, W]
+                edited_hwc = edited_chw.permute(1, 2, 0)   # [H, W, 3]
+
+                cached_transformed_imgs[img_id] = edited_hwc
 
         return cached_transformed_imgs
 
     @torch.no_grad()
-    def render_and_get_ip2p_naive(self, loader):
+    def render_and_get_flowedit_iterative(self, loader):
+
         cached_transformed_imgs = {}
         cfg = self.cfg
         device = self.device
 
-        prompt = cfg.prompt
-        pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(
-            "timbrooks/instruct-pix2pix",
-            torch_dtype=torch.float16,
-            safety_checker=None,
-        )
-        pipe.set_progress_bar_config(disable=True)
-        pipe.enable_attention_slicing()
-        pipe.to(device)
+        num_iters = max(1, cfg.pix2pix_iterations)
 
         for i, data in tqdm.tqdm(
             enumerate(loader),
             total=len(loader) * loader.batch_size,
-            desc="Generating InstructPix2Pix images (viewer will be laggy right now)",
+            desc=f"Generating FlowEdit (iterative, {num_iters} passes)"
         ):
             camtoworlds = data["camtoworld"].to(device)
             Ks = data["K"].to(device)
@@ -719,67 +723,60 @@ class Runner:
                 masks=masks,
             )
 
-            transform = torchvision.transforms.Compose(
-                [
-                    torchvision.transforms.ToTensor(),
-                    torchvision.transforms.Resize((height, width), antialias=True),
-                ]
-            )
-
             for j, img_id in enumerate(img_ids):
-                # [H, W, C] -> [C, H, W]
-                ip2p_input = colors[j].squeeze(0).permute(2, 0, 1)
-                ip2p_img = pipe(
-                    prompt,
-                    image=ip2p_input,
-                    num_inference_steps=cfg.pix2pix_iterations,
-                    image_guidance_scale=cfg.image_guidance_scale,
-                    output_type="np",
-                    guidance_scale=cfg.guidance_scale,
-                ).images[0]
+                # Start from the rendered view
+                current_chw = colors[j].permute(2, 0, 1)  # [C, H, W]
 
-                # [C, H, W] -> [H, W, C]
-                ip2p_img = transform(ip2p_img).permute(1, 2, 0)
-                cached_transformed_imgs[img_id] = ip2p_img
+                for _ in range(num_iters):
+                    b64 = tensor_to_base64(current_chw)
 
-                # for debugging #
-                # os.makedirs("view_renders", exist_ok=True)
-                # import matplotlib.pyplot as plt
-                # plt.figure()
-                # plt.imshow(ip2p_img)
-                # plt.savefig("view_renders/{}.png".format(img_ids[0]))
-                # plt.close()
+                    request_dict = {
+                        "image": b64,
+                        "src_prompt": "",
+                        "tar_prompt": cfg.prompt,
+                    }
+
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as tmp:
+                        tmp_path = tmp.name
+                        tmp.write(json.dumps(request_dict).encode())
+
+                    try:
+                        out = subprocess.check_output(
+                            [
+                                "conda",
+                                "run",
+                                "-n",
+                                FLOWEDIT_ENV,
+                                "python",
+                                FLOWEDIT_SCRIPT,
+                                "--request_file",
+                                tmp_path,
+                            ],
+                            stderr=subprocess.DEVNULL,
+                        )
+                    finally:
+                        os.remove(tmp_path)
+
+                    result = json.loads(out.decode())
+                    edited_b64 = result["edited"]
+                    current_chw = base64_to_tensor(edited_b64)  # new [C, H, W]
+
+                edited_hwc = current_chw.permute(1, 2, 0)  # [H, W, 3]
+                cached_transformed_imgs[img_id] = edited_hwc
 
         return cached_transformed_imgs
 
     @torch.no_grad()
     def render_and_get_flowedit(self, loader):
-        cached_transformed_imgs = {}
-        cfg = self.cfg
-        device = self.device
-
-        # Initialize FlowEdit
-        flowedit = FlowEditSD3(device=device)
-
-        prompt = cfg.prompt
-
-        for j, img_id in enumerate(img_ids):
-            rendered = colors[j].squeeze(0).permute(2, 0, 1)  # C,H,W in [0,1]
-
-            rendered = rendered.clamp(0,1).unsqueeze(0)  # 1,C,H,W
-
-            # Run FlowEdit → returns C,H,W
-            flowedit_img = flowedit.edit(
-                image=rendered,
-                prompt=prompt,
-            )
-
-            flowedit_img = flowedit_img.permute(1,2,0)   # H,W,C
-            cached_transformed_imgs[img_id] = flowedit_img
-
-
-
-        return cached_transformed_imgs
+        """
+        Dispatch based on cfg.ip2p_method, mirroring the ip2p setup:
+        - 'naive'     -> single-pass FlowEdit
+        - 'iterative' -> multi-pass FlowEdit
+        """
+        if self.cfg.ip2p_method == "iterative":
+            return self.render_and_get_flowedit_iterative(loader)
+        else:
+            return self.render_and_get_flowedit_naive(loader)
 
     def train(self):
         cfg = self.cfg
@@ -851,16 +848,17 @@ class Runner:
             except StopIteration:
                 trainloader_iter = iter(trainloader)
                 data = next(trainloader_iter)
-
+    
             if step % cfg.update_iters == 0:
                 print(
-                    "Updating views  with instructPix2Pix, Splatting optimization will run for 2500 steps after this"
+                    "Updating views with FlowEdit (SD3); splatting optimization will run for "
+                    f"{cfg.update_iters} steps after this"
                 )
-
-                # if cfg.ip2p_method == "iterative":
-                #     cached_edited_imgs = self.render_and_get_ip2p_idu(trainloader)
-                # else:
-                #     cached_edited_imgs = self.render_and_get_ip2p_naive(trainloader)
+                ckpt_before = {
+                    "step": step,
+                    "splats": self.splats.state_dict(),
+                }
+                torch.save(ckpt_before, f"{self.ckpt_dir}/pre_flowedit_step{step}_rank{self.world_rank}.pt")
 
                 cached_edited_imgs = self.render_and_get_flowedit(trainloader)
 
