@@ -208,3 +208,13 @@ __marimo__/
 
 data
 results
+base_splats.zip
+base_splats
+different_view_renders/
+final_results/
+view_renders/
+
+garbage
+sampling_results
+.gradio
+Qwen_SAM_Instruct_Pix2Pix

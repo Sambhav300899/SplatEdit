@@ -71,9 +71,9 @@ class Parser:
         colmap_dir = os.path.join(data_dir, "sparse/0/")
         if not os.path.exists(colmap_dir):
             colmap_dir = os.path.join(data_dir, "sparse")
-        assert os.path.exists(
-            colmap_dir
-        ), f"COLMAP directory {colmap_dir} does not exist."
+        assert os.path.exists(colmap_dir), (
+            f"COLMAP directory {colmap_dir} does not exist."
+        )
 
         manager = SceneManager(colmap_dir)
         manager.load_cameras()
@@ -127,9 +127,9 @@ class Parser:
             elif type_ == 5 or type_ == "OPENCV_FISHEYE":
                 params = np.array([cam.k1, cam.k2, cam.k3, cam.k4], dtype=np.float32)
                 camtype = "fisheye"
-            assert (
-                camtype == "perspective" or camtype == "fisheye"
-            ), f"Only perspective and fisheye cameras are supported, got {type_}"
+            assert camtype == "perspective" or camtype == "fisheye", (
+                f"Only perspective and fisheye cameras are supported, got {type_}"
+            )
 
             params_dict[camera_id] = params
             imsize_dict[camera_id] = (cam.width // factor, cam.height // factor)
@@ -281,9 +281,9 @@ class Parser:
             if len(params) == 0:
                 continue  # no distortion
             assert camera_id in self.Ks_dict, f"Missing K for camera {camera_id}"
-            assert (
-                camera_id in self.params_dict
-            ), f"Missing params for camera {camera_id}"
+            assert camera_id in self.params_dict, (
+                f"Missing params for camera {camera_id}"
+            )
             K = self.Ks_dict[camera_id]
             width, height = self.imsize_dict[camera_id]
 
@@ -357,16 +357,23 @@ class Dataset:
         split: str = "train",
         patch_size: Optional[int] = None,
         load_depths: bool = False,
+        n_samples=None,
     ):
         self.parser = parser
         self.split = split
         self.patch_size = patch_size
         self.load_depths = load_depths
         indices = np.arange(len(self.parser.image_names))
+
         if split == "train":
             self.indices = indices[indices % self.parser.test_every != 0]
         else:
             self.indices = indices[indices % self.parser.test_every == 0]
+
+        if n_samples is not None and n_samples < len(self.indices):
+            # Sample uniformly spaced points
+            step = len(self.indices) // n_samples
+            self.indices = self.indices[::step][:n_samples]
 
     def __len__(self):
         return len(self.indices)
