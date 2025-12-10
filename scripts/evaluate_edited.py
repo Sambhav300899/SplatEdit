@@ -8,17 +8,311 @@ import metrics
 from dataclasses import dataclass
 
 
-@dataclass
-class Config:
-    original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
-    # edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs/ckpts/ckpt_4999_rank0.pt"
-    edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs_naive/ckpts/ckpt_2499_rank0.pt"
+##DDIM Inversion with depth (naive) Texture Global Prompt (Turn season to Autumn)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = (
+#         "final_results/garden_edited_ddim_with_depth_autumn/ckpts/ckpt_9999_rank0.pt"
+#     )
 
-    data_dir: str = "data/360_v2/garden/"
+#     data_dir: str = "data/360_v2/garden/"
 
-    data_factor: int = 8
-    original_prompt: str = "there is a wooden table with a vase on it in the yard"
-    edited_prompt: str = "make it like van goghs starry night"
+#     data_factor: int = 8
+#     original_prompt: str = "a yard in spring season"
+#     edited_prompt: str = "a yard in autumn season"
+
+
+### DDIM Inversion with dept + multiview (naive) Global Prompt (Turn season to Autumn)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/garden_make_it_autumn_ddim_depth_multiview/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "a yard in spring season"
+#     edited_prompt: str = "a yard in autumn season"
+
+
+## Ipix2pix (naive) Inversion Global Prompt (Turn season to Autumn)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = (
+#         "final_results/garden_edited_igs2gs_naive/ckpts/ckpt_2499_rank0.pt"
+#     )
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "a yard in spring season"
+#     edited_prompt: str = "a yard in autumn season"
+
+
+# Iterative Ipix2pix (Iterative) Global Prompt (Turn season to Autumn)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = (
+#         "final_results/garden_edited_igs2gs_iterative/ckpts/ckpt_4999_rank0.pt"
+#     )
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "a yard in spring season"
+#     edited_prompt: str = "a yard in autumn season"
+
+
+###DDIM Inversion with depth  Object Texture (Turn table into white marble)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/garden_edited_ddim_with_depth_marble_table/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "there is a wooden table with a vase on it in the yard"
+#     edited_prompt: str = "there is a white marble table with a vase on it in the yard"
+
+
+# DDIM Inversion with depth + multiview  Object Texture (Turn table into white marble)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "final_results/garden_edited_ddim_with_depth_and_multiview_marble_table/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+
+#     original_prompt: str = "there is a wooden table with a vase on it in the yard"
+#     edited_prompt: str = "there is a white marble table with a vase on it in the yard"
+
+
+# Ipix2pix (naive) Object Texture (Turn table into white marble)
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/garden_edited_igs2gs_naive_marble/ckpts/ckpt_4999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+
+#     original_prompt: str = "there is a wooden table with a vase on it in the yard"
+#     edited_prompt: str = "there is a white marble table with a vase on it in the yard"
+
+
+# Ipix2pix (Iterative) Object Texture (Turn table into white marble)
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/garden_edited_igs2gs_iterative_marble/ckpts/ckpt_4999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "there is a wooden table with a vase on it in the yard"
+#     edited_prompt: str = "there is a white marble table with a vase on it in the yard"
+
+
+## NOT WORKING
+# DDIM Inversion with depth (naive) Object editing (Fake flowers into red roses)
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/garden_edited_ddim_with_depth_flowerpot/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+#     original_prompt: str = (
+#         "there is a vase with fake flowers kept on a wooden table in the yard"
+#     )
+#     edited_prompt: str = (
+#         "there is a vase with red roses kept on a wooden table in the yard "
+#     )
+
+
+# DDIM Inversion with depth + multiview  Object editing (Fake flowers into red roses)
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "final_results/garden_edited_ddim_with_depth_and_multiview_flowerpot/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+#     original_prompt: str = (
+#         "there is a vase with fake flowers kept on a wooden table in the yard"
+#     )
+#     edited_prompt: str = (
+#         "there is a vase with red roses kept on a wooden table in the yard "
+#     )
+
+
+#### Ipix2pix (naive) Object editing (Fake flowers into red roses)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/garden_edited_igs2gs_naive_flowerpot/ckpts/ckpt_2000_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+
+#     original_prompt: str = (
+#         "there is a vase with fake flowers kept on a wooden table in the yard"
+#     )
+#     edited_prompt: str = (
+#         "there is a vase with red roses kept on a wooden table in the yard "
+#     )
+
+
+### Ipix2pix (Iterative) Object editing (Fake flowers into red roses)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/garden_edited_igs2gs_iterative_flowerpot/ckpts/ckpt_4999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+
+#     original_prompt: str = (
+#         "there is a vase with fake flowers kept on a wooden table in the yard"
+#     )
+#     edited_prompt: str = (
+#         "there is a vase with red roses kept on a wooden table in the yard "
+#     )
+
+
+##DDIM Inversion with depth  Object Texture (Turn table into white marble)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/sampling_results/garden_edited_igs2gs_iterative_marble_05/ckpts/ckpt_4999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/garden/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "there is a wooden table with a vase on it in the yard"
+#     edited_prompt: str = "there is a white marble table with a vase on it in the yard"
+
+
+# DDIM Inversion with depth  Object Texture (Turn table into white marble)
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = (
+#         "final_results/room_edited_ddim_with_depth_van_gogh/ckpts/ckpt_9999_rank0.pt"
+#     )
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "a room"
+#     edited_prompt: str = "a room in van gogh's style"
+
+
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "final_results/room_edited_ddim_with_depth_and_multiview_van_gogh/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "a room"
+#     edited_prompt: str = "a room in van gogh's style"
+
+
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "final_results/room_edited_ddim_with_depth_and_multiview_van_gogh/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "a room"
+#     edited_prompt: str = "a room in van gogh's style"
+
+
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/room_edited_igs2gs_iterative_carpet/ckpts/ckpt_4999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "a room"
+#     edited_prompt: str = "a room in van gogh's style"
+
+
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/room_edited_igs2gs_naive_carpet/ckpts/ckpt_4999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "a room"
+#     edited_prompt: str = "a room in van gogh's style"
+
+
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/room_edited_ddim_with_depth/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "room with some furniture and black and grey carpet"
+#     edited_prompt: str = "room with some furniture and green carpet"
+
+
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = "/home/ubuntu/SplatEdit/final_results/room_edited_ddim_with_depth_and_multiview_carpet/ckpts/ckpt_9999_rank0.pt"
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "room with some furniture and black and grey carpet"
+#     edited_prompt: str = "room with some furniture and green carpet"
+
+
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = (
+#         "final_results/room_edited_igs2gs_iterative_carpet/ckpts/ckpt_4999_rank0.pt"
+#     )
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "room with some furniture and black and grey carpet"
+#     edited_prompt: str = "room with some furniture and green carpet"
+
+
+# @dataclass
+# class Config:
+#     original_splat_ckpt: str = "base_splats/room/ckpts/ckpt_19999_rank0.pt"
+#     edited_splat_ckpt: str = (
+#         "final_results/room_edited_igs2gs_naive_carpet/ckpts/ckpt_4999_rank0.pt"
+#     )
+
+#     data_dir: str = "data/360_v2/room/"
+
+#     data_factor: int = 8
+#     original_prompt: str = "room with some furniture and black and grey carpet"
+#     edited_prompt: str = "room with some furniture and green carpet"
 
 
 def get_spiral_trajectory(dataset, num_steps=60, num_rotations=2, camera_down_tilt=0.3):
@@ -124,7 +418,7 @@ def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_d
         # cv2.waitKey(1)
 
         images.append(render_colors.squeeze().permute(2, 1, 0))
-        depths.append(depth.squeeze().permute(2, 1, 0))
+        depths.append(depth.permute(2, 1, 0))
 
     # cv2.destroyAllWindows()
     images = torch.stack(images, dim=0)

@@ -52,4 +52,4 @@ with gr.Blocks() as demo:
         outputs=output_image,
     )
 
-demo.launch()
+demo.launch(share=True)
