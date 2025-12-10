@@ -10,9 +10,11 @@ from dataclasses import dataclass
 
 @dataclass
 class Config:
-    original_splat_ckpt: str = "base_splats/results/garden/ckpts/ckpt_19999_rank0.pt"
+    original_splat_ckpt: str = "base_splats/garden/ckpts/ckpt_19999_rank0.pt"
     # edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs/ckpts/ckpt_4999_rank0.pt"
-    edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs_naive/ckpts/ckpt_2499_rank0.pt"
+    # edited_splat_ckpt: str = "/home/sambhav/ml/SplatEdit/results/garden_edited_igs2gs_naive/ckpts/ckpt_2499_rank0.pt"
+    edited_splat_ckpt: str = original_splat_ckpt
+
     data_dir: str = "data/360_v2/garden/"
 
     data_factor: int = 8
@@ -75,14 +77,13 @@ def get_spiral_trajectory(dataset, num_steps=60, num_rotations=2, camera_down_ti
 def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_degree):
     images = []
     depths = []
-    trajectory = get_spiral_trajectory(dataset, num_steps=len(dataset), num_rotations=1)
+    # trajectory = get_spiral_trajectory(dataset, num_steps=len(dataset), num_rotations=1)
 
     print(f"rendering {len(dataset)} images...")
     for i in tqdm.tqdm(range(len(dataset))):
         data = dataset[i]
 
-        # camtoworld = data["camtoworld"].to(device)
-        camtoworld = trajectory[i].to(device)
+        camtoworld = data["camtoworld"].to(device)
         # print(camtoworld)
         K = data["K"].to(device)
 
@@ -109,19 +110,24 @@ def render_loader(dataset, device, means, quats, scales, opacities, colors, sh_d
         depth = render_colors[:, :, :, 3]
         render_colors = render_colors[:, :, :, :3]
 
-        # uncomment to debug
-        import cv2
+        # torch.save(depth, "depth.pt")
+        # torch.save(render_colors, "render_colors.pt")
 
-        display_image = (
-            render_colors.squeeze().cpu().numpy()[:, :, ::-1] * 255
-        ).astype("uint8")
-        cv2.imshow("Rendered Image", display_image)
-        cv2.waitKey(1)
+        # print(depth.shape, render_colors.shape, depth.max(), depth.min())
+        # exit()
+        # # uncomment to debug
+        # import cv2
+
+        # display_image = (
+        #     render_colors.squeeze().cpu().numpy()[:, :, ::-1] * 255
+        # ).astype("uint8")
+        # cv2.imshow("Rendered Image", display_image)
+        # cv2.waitKey(1)
 
         images.append(render_colors.squeeze().permute(2, 1, 0))
-        depths.append(render_colors.squeeze().permute(2, 1, 0))
+        depths.append(depth.squeeze().permute(2, 1, 0))
 
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
     images = torch.stack(images, dim=0)
     depths = torch.stack(depths, dim=0)
 

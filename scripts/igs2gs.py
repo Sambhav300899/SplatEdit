@@ -1,6 +1,10 @@
+import sys, os
+# Add SplatEdit/ folder to sys.path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import json
 import math
-import os
 import time
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -11,10 +15,12 @@ import imageio
 import numpy as np
 import torch
 import torch.nn.functional as F
+from torchvision import transforms
 import tqdm
 import tyro
 import viser
 import yaml
+import random
 from datasets.colmap import Dataset, Parser
 from datasets.traj import (
     generate_ellipse_path_z,
@@ -36,6 +42,7 @@ from gsplat.distributed import cli
 from gsplat.optimizers import SelectiveAdam
 from gsplat.rendering import rasterization
 from gsplat.strategy import DefaultStrategy, MCMCStrategy
+from Qwen_SAM_Instruct_Pix2Pix.grounded_instruct_pix2pix_wrapper import GroundedInstructPixtoPix
 from gsplat_viewer import GsplatViewer, GsplatRenderTabState
 from nerfview import CameraState, RenderTabState, apply_float_colormap
 
@@ -49,7 +56,7 @@ from diffusers import (
 @dataclass
 class Config:
     # Disable viewer
-    disable_viewer: bool = False
+    disable_viewer: bool = True
     # Path to the .pt files. If provide, it will skip training and run evaluation only.
     ckpt: Optional[List[str]] = None
     # Path to a checkpoint file to initialize the model from.
@@ -206,8 +213,15 @@ class Config:
     image_guidance_scale: float = 1.5
     pix2pix_iterations: int = 10
 
+    #grounded instructpix2pix params
+    mask_mode:str = 'dino'
+    grounded: bool = 'False'
+
     # How many iterations to update after editing
     update_iters: int = 2500
+
+    # How much data to use for training, data is sampled randomly
+    frac: float = 1.0
 
     def adjust_steps(self, factor: float):
         self.eval_steps = [int(i * factor) for i in self.eval_steps]
@@ -392,11 +406,14 @@ class Runner:
             normalize=cfg.normalize_world_space,
             test_every=cfg.test_every,
         )
+        n_samples = int(len(self.parser.image_names) * cfg.frac)
+        print("Using", n_samples, "images for training")
         self.trainset = Dataset(
             self.parser,
             split="train",
             patch_size=cfg.patch_size,
             load_depths=cfg.depth_loss,
+            n_samples=n_samples,
         )
         self.valset = Dataset(self.parser, split="val")
         self.scene_scale = self.parser.scene_scale * 1.1 * cfg.global_scale
@@ -598,6 +615,76 @@ class Runner:
             render_colors[~masks] = 0
         return render_colors, render_alphas, info
 
+
+    @torch.no_grad()
+    def render_and_get_grounded_ip2p_naive(self, loader):
+        cached_transformed_imgs = {}
+        cfg = self.cfg
+        device = self.device
+
+        prompt = cfg.prompt
+        blending_range=[100,1]
+        g_ip2p = GroundedInstructPixtoPix(device = torch.device(device), prompt = prompt,
+                                                         num_timesteps=cfg.pix2pix_iterations, image_guidance_scale=cfg.image_guidance_scale,
+                                                         text_guidance_scale=cfg.guidance_scale,start_blending_at_tstep=blending_range[0],
+                                                         end_blending_at_tstep=blending_range[1],debug = False, mode=cfg.mask_mode)
+
+        for i, data in tqdm.tqdm(
+            enumerate(loader),
+            total=len(loader) * loader.batch_size,
+            desc="Generating InstructPix2Pix images (viewer will be laggy right now)",
+        ):
+            camtoworlds = data["camtoworld"].to(device)
+            Ks = data["K"].to(device)
+            pixels = data["image"].to(device) / 255.0
+            masks = data["mask"].to(device) if "mask" in data else None
+            height, width = pixels.shape[1:3]
+            img_ids = data["image_id"].tolist()
+
+            colors, _, _ = self.rasterize_splats(
+                camtoworlds=camtoworlds,
+                Ks=Ks,
+                width=width,
+                height=height,
+                sh_degree=cfg.sh_degree,
+                near_plane=cfg.near_plane,
+                far_plane=cfg.far_plane,
+                masks=masks,
+            )
+
+            transform = torchvision.transforms.Compose(
+                [
+                    torchvision.transforms.Resize((height, width), antialias=True),
+                ]
+            )
+
+            for j, img_id in enumerate(img_ids):
+                # [H, W, C] -> [C, H, W]
+                g_ip2p_input = colors[j].squeeze(0).permute(2, 0, 1).float().cpu()
+                to_pil = transforms.ToPILImage()
+                image = to_pil(g_ip2p_input)
+                g_ip2p_img = (
+                    g_ip2p.edit_image(image)
+                )
+                to_tensor = transforms.ToTensor()
+                edited_image = to_tensor(g_ip2p_img)
+
+                # # [C, H, W] -> [H, W, C]
+                g_ip2p_img = transform(edited_image).permute(1, 2, 0)
+                cached_transformed_imgs[img_id] = g_ip2p_img
+
+                # for debugging #
+                # import matplotlib.pyplot as plt
+                # os.makedirs("view_renders", exist_ok=True)
+                # plt.figure()
+                # plt.imshow(ip2p_img)
+                # plt.savefig("view_renders/{}.png".format(img_ids[0]))
+                # plt.close()
+
+        return cached_transformed_imgs
+    
+
+
     @torch.no_grad()
     def render_and_get_ip2p_idu(self, loader):
         cached_transformed_imgs = {}
@@ -671,12 +758,13 @@ class Runner:
                 cached_transformed_imgs[img_id] = ip2p_img
 
                 # for debugging #
-                # import matplotlib.pyplot as plt
-                # os.makedirs("view_renders", exist_ok=True)
-                # plt.figure()
-                # plt.imshow(ip2p_img)
-                # plt.savefig("view_renders/{}.png".format(img_ids[0]))
-                # plt.close()
+                import matplotlib.pyplot as plt
+
+                os.makedirs("view_renders", exist_ok=True)
+                plt.figure()
+                plt.imshow(ip2p_img)
+                plt.savefig("view_renders/{}.png".format(img_ids[0]))
+                plt.close()
 
         return cached_transformed_imgs
 
@@ -728,7 +816,8 @@ class Runner:
 
             for j, img_id in enumerate(img_ids):
                 # [H, W, C] -> [C, H, W]
-                ip2p_input = colors[j].squeeze(0).permute(2, 0, 1)
+                ip2p_input = colors[j].permute(2, 0, 1).unsqueeze(0)
+
                 ip2p_img = pipe(
                     prompt,
                     image=ip2p_input,
@@ -743,12 +832,13 @@ class Runner:
                 cached_transformed_imgs[img_id] = ip2p_img
 
                 # for debugging #
-                # os.makedirs("view_renders", exist_ok=True)
-                # import matplotlib.pyplot as plt
-                # plt.figure()
-                # plt.imshow(ip2p_img)
-                # plt.savefig("view_renders/{}.png".format(img_ids[0]))
-                # plt.close()
+                os.makedirs("view_renders", exist_ok=True)
+                import matplotlib.pyplot as plt
+
+                plt.figure()
+                plt.imshow(ip2p_img)
+                plt.savefig("view_renders/{}.png".format(img_ids[0]))
+                plt.close()
 
         return cached_transformed_imgs
 
@@ -824,14 +914,24 @@ class Runner:
                 data = next(trainloader_iter)
 
             if step % cfg.update_iters == 0:
-                print(
-                    "Updating views  with instructPix2Pix, Splatting optimization will run for 2500 steps after this"
-                )
+                if(cfg.grounded == True):
+                    print(
+                        "Updating views  with groundeded instructPix2Pix, Splatting optimization will run for 2500 steps after this"
+                    )
 
-                if cfg.ip2p_method == "iterative":
-                    cached_edited_imgs = self.render_and_get_ip2p_idu(trainloader)
+                    if cfg.ip2p_method == "iterative":
+                        raise NotImplementedError
+                    else:
+                        cached_edited_imgs = self.render_and_get_grounded_ip2p_naive(trainloader)
                 else:
-                    cached_edited_imgs = self.render_and_get_ip2p_naive(trainloader)
+                    print(
+                        "Updating views  with instructPix2Pix, Splatting optimization will run for 2500 steps after this"
+                    )
+
+                    if cfg.ip2p_method == "iterative":
+                        cached_edited_imgs = self.render_and_get_ip2p_idu(trainloader)
+                    else:
+                        cached_edited_imgs = self.render_and_get_ip2p_naive(trainloader)
 
             camtoworlds = camtoworlds_gt = data["camtoworld"].to(device)  # [1, 4, 4]
             Ks = data["K"].to(device)  # [1, 3, 3]
@@ -981,7 +1081,8 @@ class Runner:
                 self.writer.flush()
 
             # save checkpoint before updating the model
-            if step in [i - 1 for i in cfg.save_steps] or step == max_steps - 1:
+
+            if (step > 0 and step % 1000 == 0) or step == max_steps - 1:
                 mem = torch.cuda.max_memory_allocated() / 1024**3
                 stats = {
                     "mem": mem,
