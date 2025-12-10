@@ -1,0 +1,439 @@
+--- CONSENSUS CAPTION ---
+Most frequent caption: 'there is a living room with a couch, chair, and television'
+(Appeared in 23 out of 311 frames)
+
+--- ALL UNIQUE CAPTIONS AND THEIR COUNTS ---
+'there is a living room with a couch, chair, and television': 23 times
+'there is a couch and a table in a living room': 21 times
+'there is a couch and a chair in a living room': 17 times
+'there is a living room with a piano and a couch': 15 times
+'there is a pair of shoes on the floor in front of a television': 10 times
+'there is a living room with a couch, chair, table and television': 9 times
+'there is a piano in the living room of a home': 9 times
+'there is a dog laying on the floor in a living room': 8 times
+'there is a living room with a couch, chair, television and a table': 7 times
+'there is a living room with a couch, chair, and a coffee table': 7 times
+'there is a piano in the corner of a living room': 6 times
+'there is a piano in the living room with a piano in the corner': 6 times
+'there is a couch and a table in a room': 6 times
+'there is a dog laying on the floor in the living room': 5 times
+'there is a cat that is sitting on the floor in the living room': 5 times
+'there is a pair of shoes that are on the floor in front of a tv': 5 times
+'there is a television and speakers in a living room with a piano': 5 times
+'there is a piano in the living room of this home': 5 times
+'there is a pair of slippers on the floor in front of a television': 4 times
+'there is a plant that is sitting in a pot on the floor': 4 times
+'there is a living room with a couch, piano, and a table': 3 times
+'there is a living room with a piano and a piano stand': 3 times
+'there is a cat that is laying on the floor in the living room': 3 times
+'there is a living room with a couch, chair, television and a dog': 2 times
+'there is a living room with a couch, a table, and a piano': 2 times
+'there is a living room with a couch, chair, table and piano': 2 times
+'there is a living room with a couch, table, and piano': 2 times
+'there is a piano in the corner of a room with a piano in the corner': 2 times
+'there is a piano in the living room of this apartment': 2 times
+'there is a person ' s feet on the floor in a living room': 2 times
+'there is a television that is on in a living room': 2 times
+'there is a pair of shoes on the floor in front of a tv': 2 times
+'there is a pair of slippers on the floor in a living room': 2 times
+'there is a large flat screen tv sitting on a stand in a living room': 2 times
+'there is a dog that is laying on the floor in the living room': 2 times
+'there is a cat laying on the floor in a living room': 2 times
+'there is a dog laying on the couch in the living room': 2 times
+'there is a living room with a couch, chair, television and a plant': 2 times
+'there is a cat that is laying on the floor in front of a tv': 2 times
+'there is a couch with a table and a laptop on it': 2 times
+'there is a teddy bear sitting on the floor in front of a tv': 2 times
+'there is a dog that is laying on a chair in the living room': 2 times
+'there is a television on a stand in a living room': 2 times
+'there is a cat sitting on a chair in front of a book shelf': 2 times
+'there is a television that is on a stand in the living room': 2 times
+'there is a piano in the corner of a room with a book shelf': 2 times
+'there is a computer monitor sitting on a desk in a room': 2 times
+'there is a television sitting on a table in a living room': 2 times
+'there is a couch and a lamp in a room': 2 times
+'there is a couch with a laptop on it in a living room': 2 times
+'there is a living room with a couch, chair, television and a teddy bear': 1 times
+'there is a living room with a couch, a table, and a television': 1 times
+'there is a living room with a couch and a table': 1 times
+'there is a living room with a couch, a piano, and a table': 1 times
+'there is a person laying on the floor in a living room': 1 times
+'there is a living room with a piano and a piano table': 1 times
+'there is a living room with a couch, chair, and piano': 1 times
+'there is a small living room with a couch and a television': 1 times
+'there is a person sitting on the floor in front of a tv': 1 times
+'there is a piano in the living room with a piano in the background': 1 times
+'there is a piano and a piano in the living room': 1 times
+'there is a living room with a piano and a piano case': 1 times
+'there is a living room with a couch, television, and a table': 1 times
+'there is a view of a living room with a television and a chair': 1 times
+'there is a pair of shoes on the floor in a living room': 1 times
+'there is a piano in the living room with a book shelf': 1 times
+'there is a piano and a piano in a living room': 1 times
+'there is a living room with a couch, a piano, and a television': 1 times
+'there is a piano in the corner of the room with a piano in the corner': 1 times
+'there is a television and a piano in a living room': 1 times
+'there is a dog that is laying on the couch in the living room': 1 times
+'there is a dog laying on a couch in a living room': 1 times
+'there is a living room with a couch, chair, and a rug': 1 times
+'there is a living room with a couch, chair, coffee table and television': 1 times
+'there is a living room with a couch, chair, and a television': 1 times
+'there is a living room with a couch, chair, and a table': 1 times
+'there is a living room with a television and a green rug': 1 times
+'there is a small chair and a television in a living room': 1 times
+'there is a television and speakers in a living room with a window': 1 times
+'there is a television and a desk in a small room': 1 times
+'there is a television and speakers in a small room': 1 times
+'there is a cat that is sitting on a chair in the living room': 1 times
+'there is a chair and a chair in a room with a window': 1 times
+'there is a stuffed animal sitting on a chair in a living room': 1 times
+'there is a teddy bear sitting on the floor in a living room': 1 times
+'there is a dog laying on the floor in front of a television': 1 times
+'there is a plant that is sitting on the floor in front of a tv': 1 times
+'there is a plant in a pot on the floor next to a speaker': 1 times
+'there is a plant in a pot on a table in front of a tv': 1 times
+'there is a plant that is sitting on a table in front of a book shelf': 1 times
+'there is a small table with a potted plant in front of a book shelf': 1 times
+'there is a plant in a pot on a table in front of a bookcase': 1 times
+'there is a plant that is sitting in a pot next to a book shelf': 1 times
+'there is a plant in a pot next to a television': 1 times
+'there is a blue chair and a blue ottoman in a living room': 1 times
+'there is a couch with a bowl of food on it': 1 times
+'there is a black and white rug on the floor in a room': 1 times
+'there is a black and white rug on the floor in a living room': 1 times
+'there is a living room with a couch, table, and television': 1 times
+'there is a living room with a couch, table, and a television': 1 times
+'there is a black piano in the living room with a plant': 1 times
+'there is a plant that is sitting on a stand in the living room': 1 times
+'there is a television that is on in the living room': 1 times
+'there is a television and a pair of slippers on the floor': 1 times
+'there is a television and speakers in a living room with a laptop': 1 times
+'there is a computer and speakers in a room with a tv': 1 times
+'there is a computer and a laptop on a desk in a room': 1 times
+'there is a computer desk with a monitor and speakers on it': 1 times
+'there is a desk with a computer and a printer on it': 1 times
+'there is a desk with a computer and a book shelf': 1 times
+'there is a laptop on a desk in a small room': 1 times
+'there is a picture of a picture of a cat on a shelf': 1 times
+'there is a computer desk with a monitor and a printer on it': 1 times
+'there is a computer desk with a monitor and a printer': 1 times
+'there is a television sitting on a desk in a room': 1 times
+'there is a television and a clock on a shelf in a room': 1 times
+'there is a pair of shoes that are on the floor': 1 times
+'there is a couch with a table and a chair in the room': 1 times
+'there is a couch with a table on it in a living room': 1 times
+'there is a cat sitting on a couch in a living room': 1 times
+'there is a plant in a pot on the floor in the living room': 1 times
+
+--- INDIVIDUAL IMAGE CAPTIONS ---
+DSCF4667.png: there is a living room with a couch, chair, television and a table
+DSCF4668.png: there is a dog laying on the floor in the living room
+DSCF4669.png: there is a dog laying on the floor in the living room
+DSCF4670.png: there is a dog laying on the floor in the living room
+DSCF4671.png: there is a dog laying on the floor in the living room
+DSCF4672.png: there is a dog laying on the floor in the living room
+DSCF4673.png: there is a living room with a couch, chair, television and a table
+DSCF4674.png: there is a living room with a couch, chair, television and a dog
+DSCF4675.png: there is a living room with a couch, chair, television and a teddy bear
+DSCF4676.png: there is a living room with a couch, chair, and television
+DSCF4677.png: there is a living room with a couch, chair, and television
+DSCF4678.png: there is a couch and a chair in a living room
+DSCF4679.png: there is a living room with a couch, chair, and television
+DSCF4680.png: there is a living room with a couch, chair, and a coffee table
+DSCF4681.png: there is a couch and a chair in a living room
+DSCF4682.png: there is a couch and a chair in a living room
+DSCF4683.png: there is a couch and a chair in a living room
+DSCF4684.png: there is a couch and a chair in a living room
+DSCF4685.png: there is a couch and a chair in a living room
+DSCF4686.png: there is a couch and a table in a living room
+DSCF4687.png: there is a living room with a couch, chair, table and television
+DSCF4688.png: there is a living room with a couch, chair, table and television
+DSCF4689.png: there is a living room with a couch, a table, and a television
+DSCF4690.png: there is a living room with a couch, chair, table and television
+DSCF4691.png: there is a living room with a couch, chair, table and television
+DSCF4692.png: there is a living room with a couch, chair, table and television
+DSCF4693.png: there is a living room with a couch, chair, table and television
+DSCF4694.png: there is a living room with a couch, chair, and television
+DSCF4695.png: there is a living room with a couch and a table
+DSCF4696.png: there is a couch and a table in a living room
+DSCF4697.png: there is a living room with a couch, a piano, and a table
+DSCF4698.png: there is a living room with a piano and a couch
+DSCF4699.png: there is a piano in the living room of a home
+DSCF4700.png: there is a piano in the living room of a home
+DSCF4701.png: there is a piano in the living room of a home
+DSCF4702.png: there is a living room with a piano and a couch
+DSCF4703.png: there is a living room with a couch, a table, and a piano
+DSCF4704.png: there is a living room with a couch, a table, and a piano
+DSCF4705.png: there is a living room with a couch, chair, table and piano
+DSCF4706.png: there is a living room with a couch, table, and piano
+DSCF4707.png: there is a living room with a couch, table, and piano
+DSCF4708.png: there is a living room with a piano and a couch
+DSCF4709.png: there is a living room with a piano and a couch
+DSCF4710.png: there is a living room with a couch, chair, table and television
+DSCF4711.png: there is a cat that is sitting on the floor in the living room
+DSCF4712.png: there is a cat that is sitting on the floor in the living room
+DSCF4713.png: there is a person laying on the floor in a living room
+DSCF4714.png: there is a living room with a couch, chair, and television
+DSCF4715.png: there is a couch and a table in a living room
+DSCF4716.png: there is a couch and a table in a living room
+DSCF4717.png: there is a couch and a table in a living room
+DSCF4718.png: there is a couch and a table in a living room
+DSCF4719.png: there is a couch and a table in a living room
+DSCF4720.png: there is a living room with a piano and a couch
+DSCF4721.png: there is a piano in the living room of a home
+DSCF4722.png: there is a piano in the living room of a home
+DSCF4723.png: there is a living room with a piano and a couch
+DSCF4724.png: there is a living room with a piano and a couch
+DSCF4725.png: there is a living room with a piano and a couch
+DSCF4726.png: there is a living room with a piano and a piano table
+DSCF4727.png: there is a piano in the corner of a living room
+DSCF4728.png: there is a piano in the corner of a room with a piano in the corner
+DSCF4729.png: there is a piano in the corner of a living room
+DSCF4730.png: there is a piano in the corner of a living room
+DSCF4731.png: there is a piano in the corner of a living room
+DSCF4732.png: there is a piano in the corner of a living room
+DSCF4733.png: there is a piano in the living room of this apartment
+DSCF4734.png: there is a living room with a piano and a couch
+DSCF4735.png: there is a piano in the living room of a home
+DSCF4736.png: there is a piano in the living room of a home
+DSCF4737.png: there is a living room with a piano and a couch
+DSCF4738.png: there is a living room with a piano and a couch
+DSCF4739.png: there is a living room with a piano and a couch
+DSCF4740.png: there is a living room with a couch, piano, and a table
+DSCF4741.png: there is a living room with a couch, piano, and a table
+DSCF4742.png: there is a living room with a couch, chair, and television
+DSCF4743.png: there is a living room with a couch, chair, and piano
+DSCF4744.png: there is a living room with a couch, chair, table and television
+DSCF4745.png: there is a small living room with a couch and a television
+DSCF4746.png: there is a living room with a couch, chair, and television
+DSCF4747.png: there is a person ' s feet on the floor in a living room
+DSCF4748.png: there is a person ' s feet on the floor in a living room
+DSCF4749.png: there is a person sitting on the floor in front of a tv
+DSCF4750.png: there is a living room with a couch, chair, television and a table
+DSCF4751.png: there is a pair of shoes on the floor in front of a television
+DSCF4752.png: there is a pair of shoes on the floor in front of a television
+DSCF4753.png: there is a pair of shoes that are on the floor in front of a tv
+DSCF4754.png: there is a pair of shoes that are on the floor in front of a tv
+DSCF4755.png: there is a pair of slippers on the floor in front of a television
+DSCF4756.png: there is a television that is on in a living room
+DSCF4757.png: there is a television and speakers in a living room with a piano
+DSCF4758.png: there is a television and speakers in a living room with a piano
+DSCF4759.png: there is a piano in the living room with a piano in the background
+DSCF4760.png: there is a piano and a piano in the living room
+DSCF4761.png: there is a piano in the living room of this apartment
+DSCF4762.png: there is a living room with a piano and a piano case
+DSCF4763.png: there is a living room with a couch, television, and a table
+DSCF4764.png: there is a view of a living room with a television and a chair
+DSCF4765.png: there is a pair of shoes on the floor in a living room
+DSCF4766.png: there is a living room with a couch, chair, television and a table
+DSCF4767.png: there is a living room with a couch, chair, television and a table
+DSCF4768.png: there is a living room with a piano and a couch
+DSCF4769.png: there is a living room with a piano and a piano stand
+DSCF4770.png: there is a living room with a piano and a piano stand
+DSCF4771.png: there is a living room with a piano and a couch
+DSCF4772.png: there is a living room with a piano and a piano stand
+DSCF4773.png: there is a piano in the living room of this home
+DSCF4774.png: there is a piano in the living room of this home
+DSCF4775.png: there is a piano in the living room of this home
+DSCF4776.png: there is a piano in the living room with a piano in the corner
+DSCF4777.png: there is a piano in the living room with a piano in the corner
+DSCF4778.png: there is a piano in the living room with a piano in the corner
+DSCF4779.png: there is a piano in the living room with a book shelf
+DSCF4780.png: there is a piano in the living room with a piano in the corner
+DSCF4781.png: there is a piano and a piano in a living room
+DSCF4782.png: there is a television and speakers in a living room with a piano
+DSCF4783.png: there is a television and speakers in a living room with a piano
+DSCF4784.png: there is a pair of shoes that are on the floor in front of a tv
+DSCF4785.png: there is a pair of shoes on the floor in front of a television
+DSCF4786.png: there is a pair of shoes on the floor in front of a tv
+DSCF4787.png: there is a pair of shoes on the floor in front of a television
+DSCF4788.png: there is a pair of slippers on the floor in a living room
+DSCF4789.png: there is a pair of slippers on the floor in a living room
+DSCF4790.png: there is a dog laying on the floor in a living room
+DSCF4791.png: there is a cat that is laying on the floor in the living room
+DSCF4792.png: there is a couch and a table in a living room
+DSCF4793.png: there is a living room with a couch, chair, table and piano
+DSCF4794.png: there is a living room with a couch, piano, and a table
+DSCF4795.png: there is a living room with a couch, a piano, and a television
+DSCF4796.png: there is a living room with a piano and a couch
+DSCF4797.png: there is a piano in the living room of this home
+DSCF4798.png: there is a piano in the living room with a piano in the corner
+DSCF4799.png: there is a piano in the living room of this home
+DSCF4800.png: there is a piano in the living room with a piano in the corner
+DSCF4801.png: there is a piano in the corner of the room with a piano in the corner
+DSCF4802.png: there is a television and a piano in a living room
+DSCF4803.png: there is a large flat screen tv sitting on a stand in a living room
+DSCF4804.png: there is a couch and a table in a living room
+DSCF4805.png: there is a living room with a couch, chair, and a coffee table
+DSCF4806.png: there is a living room with a couch, chair, and television
+DSCF4807.png: there is a couch and a chair in a living room
+DSCF4808.png: there is a couch and a table in a living room
+DSCF4809.png: there is a couch and a table in a living room
+DSCF4810.png: there is a couch and a table in a living room
+DSCF4811.png: there is a dog laying on the floor in a living room
+DSCF4812.png: there is a couch and a chair in a living room
+DSCF4813.png: there is a dog laying on the floor in a living room
+DSCF4814.png: there is a dog laying on the floor in a living room
+DSCF4815.png: there is a dog that is laying on the floor in the living room
+DSCF4816.png: there is a dog that is laying on the couch in the living room
+DSCF4817.png: there is a dog laying on the floor in a living room
+DSCF4818.png: there is a dog laying on a couch in a living room
+DSCF4819.png: there is a living room with a couch, chair, and television
+DSCF4820.png: there is a living room with a couch, chair, and television
+DSCF4821.png: there is a living room with a couch, chair, and television
+DSCF4822.png: there is a living room with a couch, chair, and television
+DSCF4823.png: there is a living room with a couch, chair, and television
+DSCF4824.png: there is a cat laying on the floor in a living room
+DSCF4825.png: there is a living room with a couch, chair, and television
+DSCF4826.png: there is a living room with a couch, chair, and a coffee table
+DSCF4827.png: there is a living room with a couch, chair, and a rug
+DSCF4828.png: there is a cat laying on the floor in a living room
+DSCF4829.png: there is a dog that is laying on the floor in the living room
+DSCF4830.png: there is a living room with a couch, chair, table and television
+DSCF4831.png: there is a couch and a table in a living room
+DSCF4832.png: there is a living room with a couch, chair, coffee table and television
+DSCF4833.png: there is a living room with a couch, chair, and television
+DSCF4834.png: there is a living room with a couch, chair, television and a dog
+DSCF4835.png: there is a dog laying on the floor in a living room
+DSCF4836.png: there is a couch and a chair in a living room
+DSCF4837.png: there is a dog laying on the couch in the living room
+DSCF4838.png: there is a dog laying on the couch in the living room
+DSCF4839.png: there is a living room with a couch, chair, and television
+DSCF4840.png: there is a living room with a couch, chair, and television
+DSCF4841.png: there is a dog laying on the floor in a living room
+DSCF4842.png: there is a dog laying on the floor in a living room
+DSCF4843.png: there is a living room with a couch, chair, and a coffee table
+DSCF4844.png: there is a living room with a couch, chair, and a coffee table
+DSCF4845.png: there is a living room with a couch, chair, and a television
+DSCF4846.png: there is a living room with a couch, chair, and a coffee table
+DSCF4847.png: there is a living room with a couch, chair, and a coffee table
+DSCF4848.png: there is a living room with a couch, chair, and a table
+DSCF4849.png: there is a living room with a couch, chair, and television
+DSCF4850.png: there is a cat that is laying on the floor in the living room
+DSCF4851.png: there is a living room with a couch, chair, television and a plant
+DSCF4852.png: there is a living room with a couch, chair, and television
+DSCF4853.png: there is a living room with a couch, chair, and television
+DSCF4854.png: there is a cat that is laying on the floor in front of a tv
+DSCF4855.png: there is a living room with a couch, chair, and television
+DSCF4856.png: there is a living room with a couch, chair, television and a plant
+DSCF4857.png: there is a living room with a couch, chair, and television
+DSCF4858.png: there is a living room with a couch, chair, and television
+DSCF4859.png: there is a living room with a television and a green rug
+DSCF4860.png: there is a living room with a couch, chair, television and a table
+DSCF4861.png: there is a living room with a couch, chair, television and a table
+DSCF4862.png: there is a couch and a table in a living room
+DSCF4863.png: there is a couch and a table in a living room
+DSCF4864.png: there is a couch with a table and a laptop on it
+DSCF4865.png: there is a couch and a table in a living room
+DSCF4866.png: there is a couch and a chair in a living room
+DSCF4867.png: there is a couch and a chair in a living room
+DSCF4868.png: there is a pair of shoes on the floor in front of a television
+DSCF4869.png: there is a pair of shoes on the floor in front of a television
+DSCF4870.png: there is a teddy bear sitting on the floor in front of a tv
+DSCF4871.png: there is a teddy bear sitting on the floor in front of a tv
+DSCF4872.png: there is a dog that is laying on a chair in the living room
+DSCF4873.png: there is a dog that is laying on a chair in the living room
+DSCF4874.png: there is a small chair and a television in a living room
+DSCF4875.png: there is a television and speakers in a living room with a window
+DSCF4876.png: there is a television and a desk in a small room
+DSCF4877.png: there is a television and speakers in a small room
+DSCF4878.png: there is a cat that is sitting on a chair in the living room
+DSCF4879.png: there is a chair and a chair in a room with a window
+DSCF4880.png: there is a stuffed animal sitting on a chair in a living room
+DSCF4881.png: there is a cat that is laying on the floor in the living room
+DSCF4882.png: there is a couch and a chair in a living room
+DSCF4883.png: there is a teddy bear sitting on the floor in a living room
+DSCF4884.png: there is a pair of shoes on the floor in front of a television
+DSCF4885.png: there is a pair of shoes that are on the floor in front of a tv
+DSCF4886.png: there is a pair of shoes on the floor in front of a television
+DSCF4887.png: there is a dog laying on the floor in front of a television
+DSCF4888.png: there is a television on a stand in a living room
+DSCF4889.png: there is a plant that is sitting on the floor in front of a tv
+DSCF4890.png: there is a plant that is sitting in a pot on the floor
+DSCF4891.png: there is a plant in a pot on the floor next to a speaker
+DSCF4892.png: there is a plant that is sitting in a pot on the floor
+DSCF4893.png: there is a plant in a pot on a table in front of a tv
+DSCF4894.png: there is a plant that is sitting on a table in front of a book shelf
+DSCF4895.png: there is a small table with a potted plant in front of a book shelf
+DSCF4896.png: there is a cat sitting on a chair in front of a book shelf
+DSCF4897.png: there is a cat sitting on a chair in front of a book shelf
+DSCF4898.png: there is a plant in a pot on a table in front of a bookcase
+DSCF4899.png: there is a plant that is sitting in a pot next to a book shelf
+DSCF4900.png: there is a plant that is sitting in a pot on the floor
+DSCF4901.png: there is a plant that is sitting in a pot on the floor
+DSCF4902.png: there is a plant in a pot next to a television
+DSCF4903.png: there is a television that is on a stand in the living room
+DSCF4904.png: there is a cat that is laying on the floor in front of a tv
+DSCF4905.png: there is a pair of shoes that are on the floor in front of a tv
+DSCF4906.png: there is a pair of shoes on the floor in front of a television
+DSCF4907.png: there is a blue chair and a blue ottoman in a living room
+DSCF4908.png: there is a couch and a chair in a living room
+DSCF4909.png: there is a couch and a chair in a living room
+DSCF4910.png: there is a couch and a chair in a living room
+DSCF4911.png: there is a couch and a table in a living room
+DSCF4912.png: there is a couch with a bowl of food on it
+DSCF4913.png: there is a couch and a chair in a living room
+DSCF4914.png: there is a couch and a chair in a living room
+DSCF4915.png: there is a black and white rug on the floor in a room
+DSCF4916.png: there is a black and white rug on the floor in a living room
+DSCF4917.png: there is a living room with a couch, table, and television
+DSCF4918.png: there is a living room with a couch, table, and a television
+DSCF4919.png: there is a piano in the living room of a home
+DSCF4920.png: there is a piano in the living room of a home
+DSCF4921.png: there is a piano in the corner of a room with a piano in the corner
+DSCF4922.png: there is a piano in the corner of a room with a book shelf
+DSCF4923.png: there is a piano in the corner of a room with a book shelf
+DSCF4924.png: there is a piano in the corner of a living room
+DSCF4925.png: there is a black piano in the living room with a plant
+DSCF4926.png: there is a plant that is sitting on a stand in the living room
+DSCF4927.png: there is a television that is on in the living room
+DSCF4928.png: there is a pair of slippers on the floor in front of a television
+DSCF4929.png: there is a pair of slippers on the floor in front of a television
+DSCF4930.png: there is a pair of slippers on the floor in front of a television
+DSCF4931.png: there is a television and a pair of slippers on the floor
+DSCF4932.png: there is a television and speakers in a living room with a laptop
+DSCF4933.png: there is a computer and speakers in a room with a tv
+DSCF4934.png: there is a computer and a laptop on a desk in a room
+DSCF4935.png: there is a computer desk with a monitor and speakers on it
+DSCF4936.png: there is a desk with a computer and a printer on it
+DSCF4937.png: there is a desk with a computer and a book shelf
+DSCF4938.png: there is a laptop on a desk in a small room
+DSCF4939.png: there is a picture of a picture of a cat on a shelf
+DSCF4940.png: there is a computer monitor sitting on a desk in a room
+DSCF4941.png: there is a computer desk with a monitor and a printer on it
+DSCF4942.png: there is a computer monitor sitting on a desk in a room
+DSCF4943.png: there is a computer desk with a monitor and a printer
+DSCF4944.png: there is a television sitting on a desk in a room
+DSCF4945.png: there is a television sitting on a table in a living room
+DSCF4946.png: there is a television sitting on a table in a living room
+DSCF4947.png: there is a television on a stand in a living room
+DSCF4948.png: there is a television and a clock on a shelf in a room
+DSCF4949.png: there is a television that is on in a living room
+DSCF4950.png: there is a television that is on a stand in the living room
+DSCF4951.png: there is a large flat screen tv sitting on a stand in a living room
+DSCF4952.png: there is a television and speakers in a living room with a piano
+DSCF4953.png: there is a pair of shoes on the floor in front of a television
+DSCF4954.png: there is a pair of shoes that are on the floor
+DSCF4955.png: there is a pair of shoes on the floor in front of a tv
+DSCF4956.png: there is a couch and a table in a living room
+DSCF4957.png: there is a couch with a table and a chair in the room
+DSCF4958.png: there is a couch with a table on it in a living room
+DSCF4959.png: there is a couch with a table and a laptop on it
+DSCF4960.png: there is a couch and a table in a living room
+DSCF4961.png: there is a couch and a table in a living room
+DSCF4962.png: there is a couch and a table in a living room
+DSCF4963.png: there is a couch and a table in a room
+DSCF4964.png: there is a couch and a table in a room
+DSCF4965.png: there is a couch and a table in a room
+DSCF4966.png: there is a couch and a lamp in a room
+DSCF4967.png: there is a couch and a lamp in a room
+DSCF4968.png: there is a couch and a table in a room
+DSCF4969.png: there is a couch and a table in a room
+DSCF4970.png: there is a couch with a laptop on it in a living room
+DSCF4971.png: there is a couch with a laptop on it in a living room
+DSCF4972.png: there is a couch and a table in a room
+DSCF4973.png: there is a cat sitting on a couch in a living room
+DSCF4974.png: there is a cat that is sitting on the floor in the living room
+DSCF4975.png: there is a cat that is sitting on the floor in the living room
+DSCF4976.png: there is a cat that is sitting on the floor in the living room
+DSCF4977.png: there is a plant in a pot on the floor in the living room

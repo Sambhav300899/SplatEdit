@@ -13,6 +13,7 @@ from typing import Dict, List, Optional, Tuple, Union
 
 import imageio
 import numpy as np
+import PIL.Image
 import torch
 import torch.nn.functional as F
 from torchvision import transforms
@@ -50,6 +51,7 @@ import torchvision
 import ip2p
 from diffusers import (
     StableDiffusionInstructPix2PixPipeline,
+    EulerAncestralDiscreteScheduler,
 )
 
 
@@ -780,6 +782,9 @@ class Runner:
             torch_dtype=torch.float16,
             safety_checker=None,
         )
+        pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(
+            pipe.scheduler.config
+        )
         pipe.set_progress_bar_config(disable=True)
         pipe.enable_attention_slicing()
         pipe.to(device)
@@ -807,28 +812,25 @@ class Runner:
                 masks=masks,
             )
 
-            transform = torchvision.transforms.Compose(
-                [
-                    torchvision.transforms.ToTensor(),
-                    torchvision.transforms.Resize((height, width), antialias=True),
-                ]
-            )
-
             for j, img_id in enumerate(img_ids):
-                # [H, W, C] -> [C, H, W]
-                ip2p_input = colors[j].permute(2, 0, 1).unsqueeze(0)
+                # Convert tensor [H, W, C] to PIL Image
+                # Clamp to [0, 1] and convert to uint8 [0, 255]
+                color_np = (
+                    torch.clamp(colors[j], 0.0, 1.0).cpu().numpy() * 255
+                ).astype("uint8")
+                input_image = PIL.Image.fromarray(color_np)
 
+                # Generate edited image
                 ip2p_img = pipe(
                     prompt,
-                    image=ip2p_input,
+                    image=input_image,
                     num_inference_steps=cfg.pix2pix_iterations,
                     image_guidance_scale=cfg.image_guidance_scale,
-                    output_type="np",
                     guidance_scale=cfg.guidance_scale,
                 ).images[0]
 
-                # [C, H, W] -> [H, W, C]
-                ip2p_img = transform(ip2p_img).permute(1, 2, 0)
+                # Convert PIL image to tensor [H, W, C]
+                ip2p_img = torchvision.transforms.ToTensor()(ip2p_img).permute(1, 2, 0)
                 cached_transformed_imgs[img_id] = ip2p_img
 
                 # for debugging #

@@ -709,6 +709,10 @@ class Runner:
                     num_inference_steps=50,
                 )
 
+                # alpha = 0.5 + 0.25 * torch.rand(1).item()
+                # original_image_chw = pixels[j]
+                # edited = alpha * edited + (1 - alpha) * colors.to(edited.device)
+
                 cached_transformed_imgs[img_id] = edited
 
                 # for debugging #
@@ -779,6 +783,125 @@ class Runner:
 
         return cached_transformed_imgs
 
+    @torch.no_grad()
+    def render_and_edit_ddim_with_depth_and_multiview(self, loader):
+        cfg = self.cfg
+        device = self.device
+
+        idx2image = {}
+        idx2depth = {}
+        img_ids = []
+
+        for i, data in tqdm.tqdm(
+            enumerate(loader),
+            total=len(loader) * loader.batch_size,
+        ):
+            camtoworlds = data["camtoworld"].to(device)
+            Ks = data["K"].to(device)
+            pixels = data["image"].to(device) / 255.0
+            masks = data["mask"].to(device) if "mask" in data else None
+            height, width = pixels.shape[1:3]
+
+            colors, _, _ = self.rasterize_splats(
+                camtoworlds=camtoworlds,
+                Ks=Ks,
+                width=width,
+                height=height,
+                sh_degree=cfg.sh_degree,
+                near_plane=cfg.near_plane,
+                far_plane=cfg.far_plane,
+                masks=masks,
+                render_mode="RGB+ED",
+            )
+
+            depth = colors[:, :, :, -1:]
+            colors = colors[:, :, :, :3]
+
+            img_ids.extend(data["image_id"].tolist())
+
+            for j, img_id in enumerate(data["image_id"].tolist()):
+                idx2image[img_id] = colors[j].permute(2, 0, 1)
+                idx2depth[img_id] = depth[j].permute(2, 0, 1)
+
+        ddim_editor = ddim_inversion.DDIMInversionEditorDepthMultiview(device=device)
+        cached_transformed_imgs = ddim_editor.run_edits(
+            idx2image=idx2image,
+            idx2depth=idx2depth,
+            idxs=img_ids,
+            edit_prompt=cfg.prompt,
+            source_prompt=cfg.source_prompt,
+            controlnet_conditioning_scale=0.5,
+            guidance_scale=3.5,
+            negative_prompt="bench",
+            num_inference_steps=50,
+            num_ref_views=4,
+            bs=12,
+        )
+
+        return cached_transformed_imgs
+
+    @torch.no_grad()
+    def render_and_edit_ddim_with_depth_and_multiview_3d_projection(self, loader):
+        cfg = self.cfg
+        device = self.device
+
+        idx2image = {}
+        idx2depth = {}
+        img_ids = []
+
+        import propagate_results_to_3d
+
+        for i, data in tqdm.tqdm(
+            enumerate(loader),
+            total=len(loader) * loader.batch_size,
+        ):
+            camtoworlds = data["camtoworld"].to(device)
+            Ks = data["K"].to(device)
+            pixels = data["image"].to(device) / 255.0
+            masks = data["mask"].to(device) if "mask" in data else None
+            height, width = pixels.shape[1:3]
+
+            colors, _, _ = self.rasterize_splats(
+                camtoworlds=camtoworlds,
+                Ks=Ks,
+                width=width,
+                height=height,
+                sh_degree=cfg.sh_degree,
+                near_plane=cfg.near_plane,
+                far_plane=cfg.far_plane,
+                masks=masks,
+                render_mode="RGB+ED",
+            )
+
+            depth = colors[:, :, :, -1:]
+            colors = colors[:, :, :, :3]
+
+            img_ids.extend(data["image_id"].tolist())
+
+            for j, img_id in enumerate(data["image_id"].tolist()):
+                idx2image[img_id] = colors[j].permute(2, 0, 1)
+                idx2depth[img_id] = depth[j].permute(2, 0, 1)
+
+        ddim_editor = propagate_results_to_3d.DDIMInversionEditorDepthMultiview(
+            device=device
+        )
+        cached_transformed_imgs = ddim_editor.run_edits(
+            idx2image=idx2image,
+            idx2depth=idx2depth,
+            idxs=img_ids,
+            edit_prompt=cfg.prompt,
+            source_prompt=cfg.source_prompt,
+            controlnet_conditioning_scale=0.5,
+            guidance_scale=3.5,
+            negative_prompt="bench",
+            num_inference_steps=50,
+            num_ref_views=4,
+            bs=12,
+            use_warping=True,
+        )
+
+        return cached_transformed_imgs
+
     def train(self):
         cfg = self.cfg
         device = self.device
@@ -836,9 +959,14 @@ class Runner:
         # Training loop.
         global_tic = time.time()
         # cached_edited_imgs = self.render_and_edit_ddim_with_depth(trainloader)
-        cached_edited_imgs = self.render_and_edit_ddim_with_depth_and_multiview(
-            trainloader
-        )
+        # cached_edited_imgs = (
+        #     self.render_and_edit_ddim_with_depth_and_multiview_3d_projection(
+        #         trainloader
+        #     )
+        # )
+
+        # cached_edited_imgs = self.render_and_edit_ddim_with_depth(trainloader)
+        cached_edited_imgs = self.render_and_edit_ddim_with_depth(trainloader)
 
         pbar = tqdm.tqdm(range(init_step, max_steps))
         for step in pbar:
