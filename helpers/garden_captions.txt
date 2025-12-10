@@ -1,0 +1,241 @@
+--- CONSENSUS CAPTION ---
+Most frequent caption: 'there is a wooden table with a vase on it in the yard'
+(Appeared in 45 out of 185 frames)
+
+--- ALL UNIQUE CAPTIONS AND THEIR COUNTS ---
+'there is a wooden table with a vase on it in the yard': 45 times
+'there is a vase with flowers on a table in the yard': 22 times
+'there is a table with a vase on it in the yard': 16 times
+'there is a wooden table with a vase of flowers on it': 13 times
+'there is a vase with a flower on a table in the yard': 10 times
+'there is a vase with flowers on a wooden table in the yard': 9 times
+'there is a wooden table with a vase on top of it': 5 times
+'there is a wooden table with a flower pot on it': 5 times
+'there is a vase with a plant on a table in the yard': 4 times
+'there is a wooden table with a wooden umbrella on it': 4 times
+'there is a table with a vase of flowers on it in the yard': 3 times
+'there is a wooden table with a vase of onions on it': 3 times
+'there is a small dog sitting on a wooden table in the yard': 3 times
+'there is a vase that is sitting on a table in the yard': 2 times
+'there is a vase on a table in the middle of a garden': 2 times
+'there is a wooden table with a vase of fruit on it': 2 times
+'there is a wooden table with a tree stump on it': 2 times
+'there is a wooden table with a statue on it in the yard': 2 times
+'there is a bird sitting on a wooden table in the yard': 2 times
+'there is a wooden umbrella with a plant in it on a stone patio': 2 times
+'there is a vase on a table in the yard with a ball': 1 times
+'there is a table with a vase of fruit on it in the yard': 1 times
+'there is a vase on a table in the backyard with a cat': 1 times
+'there is a vase on a table in the backyard with a ball': 1 times
+'there is a wooden table with a sculpture on it in the yard': 1 times
+'there is a vase with onions on a table in the yard': 1 times
+'there is a vase with a plant on top of a table': 1 times
+'there is a cat sitting on a table in the backyard': 1 times
+'there is a vase with a plant in it on a table': 1 times
+'there is a wooden table with a bird statue on it': 1 times
+'there is a wooden table with a squirrel on it in the yard': 1 times
+'there is a squirrel sitting on a wooden table in the backyard': 1 times
+'there is a vase with flowers on top of a table in the yard': 1 times
+'there is a wooden table with a metal base in the yard': 1 times
+'there is a wooden table with a plant in it on the ground': 1 times
+'there is a wooden umbrella with a flower arrangement on it': 1 times
+'there is a wooden table with a bird on it in the yard': 1 times
+'there is a small statue of a squirrel sitting on a wooden umbrella': 1 times
+'there is a teddy bear sitting on top of a wooden umbrella': 1 times
+'there is a vase with flowers on top of a wooden table': 1 times
+'there is a wooden table with a metal umbrella on it': 1 times
+'there is a wooden table with a vase on it in the middle of a garden': 1 times
+'there is a vase with a flower in it sitting on a wooden table': 1 times
+'there is a wooden umbrella with a flower in it on a stone patio': 1 times
+'there is a wooden table with a basket of flowers on it': 1 times
+'there is a wooden bench with a wooden bird on it': 1 times
+'there is a small statue of a dog sitting on a wooden table': 1 times
+'there is a cat sitting on a wooden table in the yard': 1 times
+'there is a vase with flowers sitting on a table in the yard': 1 times
+
+--- INDIVIDUAL IMAGE CAPTIONS ---
+DSC07956.png: there is a vase on a table in the yard with a ball
+DSC07957.png: there is a vase with a flower on a table in the yard
+DSC07958.png: there is a vase with a flower on a table in the yard
+DSC07959.png: there is a table with a vase on it in the yard
+DSC07960.png: there is a table with a vase on it in the yard
+DSC07961.png: there is a vase with flowers on a table in the yard
+DSC07962.png: there is a vase with a flower on a table in the yard
+DSC07963.png: there is a wooden table with a vase on it in the yard
+DSC07964.png: there is a vase with flowers on a table in the yard
+DSC07965.png: there is a table with a vase on it in the yard
+DSC07966.png: there is a table with a vase on it in the yard
+DSC07967.png: there is a wooden table with a vase on it in the yard
+DSC07968.png: there is a table with a vase on it in the yard
+DSC07969.png: there is a wooden table with a vase on it in the yard
+DSC07970.png: there is a table with a vase on it in the yard
+DSC07971.png: there is a table with a vase of flowers on it in the yard
+DSC07972.png: there is a table with a vase of fruit on it in the yard
+DSC07973.png: there is a table with a vase of flowers on it in the yard
+DSC07974.png: there is a table with a vase on it in the yard
+DSC07975.png: there is a table with a vase on it in the yard
+DSC07976.png: there is a vase with flowers on a table in the yard
+DSC07977.png: there is a vase that is sitting on a table in the yard
+DSC07978.png: there is a vase on a table in the middle of a garden
+DSC07979.png: there is a vase on a table in the middle of a garden
+DSC07980.png: there is a vase with flowers on a table in the yard
+DSC07981.png: there is a vase with flowers on a table in the yard
+DSC07982.png: there is a vase on a table in the backyard with a cat
+DSC07983.png: there is a vase on a table in the backyard with a ball
+DSC07984.png: there is a table with a vase on it in the yard
+DSC07985.png: there is a table with a vase on it in the yard
+DSC07986.png: there is a table with a vase on it in the yard
+DSC07987.png: there is a table with a vase on it in the yard
+DSC07988.png: there is a vase with a flower on a table in the yard
+DSC07989.png: there is a table with a vase on it in the yard
+DSC07990.png: there is a vase with a plant on a table in the yard
+DSC07991.png: there is a table with a vase on it in the yard
+DSC07992.png: there is a vase with a plant on a table in the yard
+DSC07993.png: there is a wooden table with a vase on it in the yard
+DSC07994.png: there is a wooden table with a vase on it in the yard
+DSC07995.png: there is a wooden table with a vase of flowers on it
+DSC07996.png: there is a wooden table with a vase of flowers on it
+DSC07997.png: there is a wooden table with a vase on it in the yard
+DSC07998.png: there is a wooden table with a vase of flowers on it
+DSC07999.png: there is a vase with a flower on a table in the yard
+DSC08000.png: there is a wooden table with a vase of flowers on it
+DSC08001.png: there is a wooden table with a vase on it in the yard
+DSC08002.png: there is a wooden table with a vase on it in the yard
+DSC08003.png: there is a wooden table with a vase on it in the yard
+DSC08004.png: there is a wooden table with a sculpture on it in the yard
+DSC08005.png: there is a wooden table with a vase of onions on it
+DSC08006.png: there is a vase with onions on a table in the yard
+DSC08007.png: there is a wooden table with a vase of onions on it
+DSC08008.png: there is a wooden table with a vase on it in the yard
+DSC08009.png: there is a wooden table with a vase on it in the yard
+DSC08010.png: there is a vase with flowers on a table in the yard
+DSC08011.png: there is a wooden table with a vase on it in the yard
+DSC08012.png: there is a wooden table with a vase on it in the yard
+DSC08013.png: there is a wooden table with a vase of flowers on it
+DSC08014.png: there is a table with a vase on it in the yard
+DSC08015.png: there is a vase that is sitting on a table in the yard
+DSC08016.png: there is a vase with a plant on top of a table
+DSC08017.png: there is a vase with flowers on a table in the yard
+DSC08018.png: there is a wooden table with a vase on it in the yard
+DSC08019.png: there is a cat sitting on a table in the backyard
+DSC08020.png: there is a vase with a flower on a table in the yard
+DSC08021.png: there is a vase with a flower on a table in the yard
+DSC08022.png: there is a vase with a flower on a table in the yard
+DSC08023.png: there is a wooden table with a vase on it in the yard
+DSC08024.png: there is a table with a vase on it in the yard
+DSC08025.png: there is a wooden table with a vase on top of it
+DSC08026.png: there is a vase with a flower on a table in the yard
+DSC08027.png: there is a wooden table with a vase on it in the yard
+DSC08028.png: there is a wooden table with a vase on it in the yard
+DSC08029.png: there is a wooden table with a vase on top of it
+DSC08030.png: there is a wooden table with a flower pot on it
+DSC08031.png: there is a wooden table with a vase on it in the yard
+DSC08032.png: there is a wooden table with a vase of flowers on it
+DSC08033.png: there is a wooden table with a vase of flowers on it
+DSC08034.png: there is a wooden table with a wooden umbrella on it
+DSC08035.png: there is a wooden table with a wooden umbrella on it
+DSC08036.png: there is a wooden table with a vase on it in the yard
+DSC08037.png: there is a wooden table with a vase on it in the yard
+DSC08038.png: there is a wooden table with a vase of flowers on it
+DSC08039.png: there is a wooden table with a vase of fruit on it
+DSC08040.png: there is a wooden table with a vase of fruit on it
+DSC08041.png: there is a wooden table with a vase of onions on it
+DSC08042.png: there is a wooden table with a vase of flowers on it
+DSC08043.png: there is a vase with flowers on a table in the yard
+DSC08044.png: there is a wooden table with a vase of flowers on it
+DSC08045.png: there is a vase with flowers on a table in the yard
+DSC08046.png: there is a vase with flowers on a table in the yard
+DSC08047.png: there is a vase with flowers on a table in the yard
+DSC08048.png: there is a vase with flowers on a table in the yard
+DSC08049.png: there is a wooden table with a vase on it in the yard
+DSC08050.png: there is a wooden table with a vase on it in the yard
+DSC08051.png: there is a vase with a plant in it on a table
+DSC08052.png: there is a vase with a plant on a table in the yard
+DSC08053.png: there is a vase with a flower on a table in the yard
+DSC08054.png: there is a vase with a plant on a table in the yard
+DSC08055.png: there is a wooden table with a vase on it in the yard
+DSC08056.png: there is a wooden table with a vase on it in the yard
+DSC08057.png: there is a wooden table with a vase on it in the yard
+DSC08058.png: there is a wooden table with a vase on it in the yard
+DSC08059.png: there is a wooden table with a vase on it in the yard
+DSC08060.png: there is a wooden table with a vase on top of it
+DSC08061.png: there is a wooden table with a flower pot on it
+DSC08062.png: there is a wooden table with a vase on top of it
+DSC08063.png: there is a wooden table with a flower pot on it
+DSC08064.png: there is a wooden table with a vase on it in the yard
+DSC08065.png: there is a wooden table with a wooden umbrella on it
+DSC08066.png: there is a wooden table with a bird statue on it
+DSC08067.png: there is a wooden table with a squirrel on it in the yard
+DSC08068.png: there is a squirrel sitting on a wooden table in the backyard
+DSC08069.png: there is a wooden table with a vase of flowers on it
+DSC08070.png: there is a vase with flowers on a table in the yard
+DSC08071.png: there is a wooden table with a vase of flowers on it
+DSC08072.png: there is a table with a vase of flowers on it in the yard
+DSC08073.png: there is a vase with flowers on a table in the yard
+DSC08074.png: there is a vase with flowers on top of a table in the yard
+DSC08075.png: there is a vase with flowers on a table in the yard
+DSC08076.png: there is a vase with flowers on a table in the yard
+DSC08077.png: there is a vase with flowers on a table in the yard
+DSC08078.png: there is a vase with flowers on a table in the yard
+DSC08079.png: there is a wooden table with a metal base in the yard
+DSC08080.png: there is a wooden table with a tree stump on it
+DSC08081.png: there is a wooden table with a vase on it in the yard
+DSC08082.png: there is a wooden table with a vase on it in the yard
+DSC08083.png: there is a wooden table with a vase on it in the yard
+DSC08084.png: there is a wooden table with a vase on it in the yard
+DSC08085.png: there is a wooden table with a vase on it in the yard
+DSC08086.png: there is a wooden table with a vase on it in the yard
+DSC08087.png: there is a wooden table with a plant in it on the ground
+DSC08088.png: there is a wooden table with a vase on it in the yard
+DSC08089.png: there is a wooden umbrella with a flower arrangement on it
+DSC08090.png: there is a wooden table with a flower pot on it
+DSC08091.png: there is a wooden table with a vase on it in the yard
+DSC08092.png: there is a wooden table with a vase on it in the yard
+DSC08093.png: there is a wooden table with a bird on it in the yard
+DSC08094.png: there is a wooden table with a statue on it in the yard
+DSC08095.png: there is a wooden table with a statue on it in the yard
+DSC08096.png: there is a small statue of a squirrel sitting on a wooden umbrella
+DSC08097.png: there is a teddy bear sitting on top of a wooden umbrella
+DSC08098.png: there is a vase with flowers on top of a wooden table
+DSC08099.png: there is a wooden table with a vase of flowers on it
+DSC08100.png: there is a wooden table with a vase on it in the yard
+DSC08101.png: there is a vase with flowers on a wooden table in the yard
+DSC08102.png: there is a vase with flowers on a table in the yard
+DSC08103.png: there is a vase with flowers on a wooden table in the yard
+DSC08104.png: there is a vase with flowers on a table in the yard
+DSC08105.png: there is a vase with flowers on a table in the yard
+DSC08106.png: there is a vase with flowers on a wooden table in the yard
+DSC08107.png: there is a vase with flowers on a wooden table in the yard
+DSC08108.png: there is a bird sitting on a wooden table in the yard
+DSC08109.png: there is a wooden table with a metal umbrella on it
+DSC08110.png: there is a wooden table with a vase on it in the middle of a garden
+DSC08111.png: there is a vase with a flower in it sitting on a wooden table
+DSC08112.png: there is a wooden umbrella with a flower in it on a stone patio
+DSC08113.png: there is a wooden table with a vase on it in the yard
+DSC08114.png: there is a wooden table with a vase on it in the yard
+DSC08115.png: there is a wooden table with a vase on it in the yard
+DSC08116.png: there is a wooden table with a vase on top of it
+DSC08117.png: there is a wooden table with a vase on it in the yard
+DSC08118.png: there is a wooden umbrella with a plant in it on a stone patio
+DSC08119.png: there is a wooden umbrella with a plant in it on a stone patio
+DSC08120.png: there is a wooden table with a flower pot on it
+DSC08121.png: there is a wooden table with a basket of flowers on it
+DSC08122.png: there is a wooden table with a tree stump on it
+DSC08123.png: there is a wooden bench with a wooden bird on it
+DSC08124.png: there is a small statue of a dog sitting on a wooden table
+DSC08125.png: there is a cat sitting on a wooden table in the yard
+DSC08126.png: there is a small dog sitting on a wooden table in the yard
+DSC08127.png: there is a small dog sitting on a wooden table in the yard
+DSC08128.png: there is a vase with flowers on a wooden table in the yard
+DSC08129.png: there is a vase with flowers on a wooden table in the yard
+DSC08130.png: there is a vase with flowers on a wooden table in the yard
+DSC08131.png: there is a vase with flowers on a table in the yard
+DSC08132.png: there is a vase with flowers sitting on a table in the yard
+DSC08133.png: there is a vase with flowers on a wooden table in the yard
+DSC08134.png: there is a vase with flowers on a wooden table in the yard
+DSC08135.png: there is a bird sitting on a wooden table in the yard
+DSC08136.png: there is a wooden table with a wooden umbrella on it
+DSC08137.png: there is a small dog sitting on a wooden table in the yard
+DSC08138.png: there is a wooden table with a vase on it in the yard
+DSC08139.png: there is a wooden table with a vase on it in the yard
+DSC08140.png: there is a wooden table with a vase on it in the yard
